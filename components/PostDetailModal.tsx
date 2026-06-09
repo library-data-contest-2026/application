@@ -21,11 +21,17 @@ type Props = {
   onClose: () => void;
 };
 
-export default function PostDetailModal({ post, user, onClose }: Props) {
+export default function PostDetailModal({ post, user: userProp, onClose }: Props) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [input, setInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(userProp);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setCurrentUser(data.user));
+  }, []);
 
   useEffect(() => {
     if (!post) return;
@@ -57,19 +63,22 @@ export default function PostDetailModal({ post, user, onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!input.trim() || !user || !post) return;
+    if (!input.trim() || !currentUser || !post) return;
     setSubmitting(true);
 
     const supabase = createClient();
     const { data, error } = await supabase
       .from("comments")
-      .insert({ post_id: post.id, user_id: user.id, content: input.trim() })
+      .insert({ post_id: post.id, user_id: currentUser.id, content: input.trim() })
       .select("id, content, created_at, user_id, profiles(username)")
       .single();
 
     if (!error && data) {
       setComments((prev) => [...prev, data as unknown as Comment]);
       setInput("");
+    } else if (error) {
+      console.error("댓글 저장 오류:", error.message);
+      alert("댓글 저장에 실패했어요: " + error.message);
     }
     setSubmitting(false);
   }
@@ -160,7 +169,7 @@ export default function PostDetailModal({ post, user, onClose }: Props) {
 
         {/* Comment input */}
         <div className="border-t border-gray-100 px-4 py-3 shrink-0">
-          {user ? (
+          {currentUser ? (
             <form onSubmit={handleSubmit} className="flex gap-2 items-center">
               <input
                 ref={inputRef}
