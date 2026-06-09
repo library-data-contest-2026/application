@@ -1,3 +1,22 @@
+export type QuizQuestion = {
+  id: string;
+  quiz_id: string;
+  question: string;
+  options: string[];
+  correct_index: number;
+  explanation: string | null;
+  order_index: number;
+};
+
+export type Quiz = {
+  id: string;
+  title: string;
+  category_id: string | null;
+  difficulty: "easy" | "medium" | "hard";
+  categories: Category | null;
+  quiz_questions: QuizQuestion[];
+};
+
 export type Category = {
   id: string;
   name: string;

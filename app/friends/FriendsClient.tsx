@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-browser";
+import BottomNav from "@/components/BottomNav";
 
 type FriendProfile = { id: string; username: string };
 
@@ -62,7 +63,7 @@ export default function FriendsClient({ currentUserId, received: initialReceived
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 max-w-lg mx-auto">
-        <Link href="/" className="text-gray-700">
+        <Link href={`/profile/${currentUserId}`} className="text-gray-700">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -138,6 +139,9 @@ export default function FriendsClient({ currentUserId, received: initialReceived
           )}
         </section>
       </main>
+
+      <div className="h-20" />
+      <BottomNav userId={currentUserId} />
     </div>
   );
 }

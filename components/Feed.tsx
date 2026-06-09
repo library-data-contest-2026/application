@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase-browser";
 import PostCard from "./PostCard";
 import PostDetailModal from "./PostDetailModal";
 import StoriesBar from "./StoriesBar";
+import BottomNav from "./BottomNav";
 
 type Props = {
   posts: Post[];
@@ -57,34 +58,7 @@ export default function Feed({ posts, categories, user }: Props) {
         </div>
       </main>
 
-      {/* Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-        <div className="max-w-lg mx-auto flex justify-around py-3">
-          <Link href="/" className="flex flex-col items-center gap-0.5">
-            <span className="text-xl">🏠</span>
-            <span className="text-[10px] text-gray-500">홈</span>
-          </Link>
-          <button className="flex flex-col items-center gap-0.5">
-            <span className="text-xl">🔍</span>
-            <span className="text-[10px] text-gray-500">탐색</span>
-          </button>
-          <Link href="/friends" className="flex flex-col items-center gap-0.5">
-            <span className="text-xl">🤝</span>
-            <span className="text-[10px] text-gray-500">친구</span>
-          </Link>
-          {user ? (
-            <Link href={`/profile/${user.id}`} className="flex flex-col items-center gap-0.5">
-              <span className="text-xl">👤</span>
-              <span className="text-[10px] text-gray-500">프로필</span>
-            </Link>
-          ) : (
-            <Link href="/login" className="flex flex-col items-center gap-0.5">
-              <span className="text-xl">👤</span>
-              <span className="text-[10px] text-gray-500">프로필</span>
-            </Link>
-          )}
-        </div>
-      </nav>
+      <BottomNav userId={user?.id} />
 
       <div className="h-20" />
 

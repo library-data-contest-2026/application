@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase-browser";
+import BottomNav from "@/components/BottomNav";
 
 type Trophy = {
   trophy_id: string;
@@ -121,10 +122,17 @@ export default function ProfilePageClient({ profile, trophies, friendCount, isOw
                 <p className="font-bold text-sm">{trophies.length}</p>
                 <p className="text-xs text-gray-500">트로피</p>
               </div>
-              <div>
-                <p className="font-bold text-sm">{friendCount}</p>
-                <p className="text-xs text-gray-500">친구</p>
-              </div>
+              {isOwner ? (
+                <Link href="/friends" className="text-center hover:opacity-70">
+                  <p className="font-bold text-sm">{friendCount}</p>
+                  <p className="text-xs text-gray-500">친구</p>
+                </Link>
+              ) : (
+                <div className="text-center">
+                  <p className="font-bold text-sm">{friendCount}</p>
+                  <p className="text-xs text-gray-500">친구</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -220,6 +228,9 @@ export default function ProfilePageClient({ profile, trophies, friendCount, isOw
           )}
         </div>
       </main>
+
+      <div className="h-20" />
+      <BottomNav userId={currentUserId} />
     </div>
   );
 }
