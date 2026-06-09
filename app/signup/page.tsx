@@ -20,28 +20,19 @@ export default function SignupPage() {
 
     const supabase = createClient();
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+        data: { username },
+      },
     });
 
     if (signUpError) {
       setError(signUpError.message);
       setLoading(false);
       return;
-    }
-
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert({ id: data.user.id, username });
-
-      if (profileError) {
-        setError("사용자 이름이 이미 사용 중입니다.");
-        setLoading(false);
-        return;
-      }
     }
 
     router.push("/");
