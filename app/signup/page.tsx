@@ -12,6 +12,7 @@ export default function SignupPage() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -35,8 +36,26 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/");
-    router.refresh();
+    setSent(true);
+    setLoading(false);
+  }
+
+  if (sent) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl p-8 text-center">
+          <div className="text-5xl mb-4">📬</div>
+          <h2 className="text-lg font-bold mb-2">이메일을 확인해주세요</h2>
+          <p className="text-sm text-gray-500">
+            <span className="font-semibold text-gray-700">{email}</span>로<br />
+            인증 링크를 보냈어요. 메일함을 확인해주세요.
+          </p>
+          <Link href="/login" className="mt-6 block text-sm text-blue-500 font-semibold">
+            로그인 페이지로
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
