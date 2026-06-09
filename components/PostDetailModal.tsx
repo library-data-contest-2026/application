@@ -152,13 +152,21 @@ export default function PostDetailModal({ post, user: userProp, onClose }: Props
           ) : (
             comments.map((c) => (
               <div key={c.id} className="flex gap-2">
-                <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
+                <Link
+                  href={`/profile/${c.user_id}`}
+                  onClick={onClose}
+                  className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0 hover:opacity-70"
+                >
                   {c.profiles?.username?.[0]?.toUpperCase() ?? "?"}
-                </div>
+                </Link>
                 <div>
-                  <span className="text-xs font-semibold text-gray-900 mr-1">
+                  <Link
+                    href={`/profile/${c.user_id}`}
+                    onClick={onClose}
+                    className="text-xs font-semibold text-gray-900 mr-1 hover:underline"
+                  >
                     {c.profiles?.username ?? "알 수 없음"}
-                  </span>
+                  </Link>
                   <span className="text-xs text-gray-700">{c.content}</span>
                   <p className="text-[10px] text-gray-400 mt-0.5">
                     {new Date(c.created_at).toLocaleDateString("ko-KR")}
