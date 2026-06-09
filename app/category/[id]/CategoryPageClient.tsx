@@ -44,11 +44,11 @@ export default function CategoryPageClient({ category, categoryPosts, user }: Pr
             <h1 className="font-bold text-lg mb-1">{category.name}</h1>
             <div className="flex gap-6 text-sm mb-2">
               <div className="text-center">
-                <p className="font-bold">{category.postCount}</p>
+                <p className="font-bold">{category.post_count ?? categoryPosts.length}</p>
                 <p className="text-gray-500 text-xs">게시물</p>
               </div>
               <div className="text-center">
-                <p className="font-bold">{category.followerCount.toLocaleString()}</p>
+                <p className="font-bold">{(category.follower_count ?? 0).toLocaleString()}</p>
                 <p className="text-gray-500 text-xs">팔로워</p>
               </div>
             </div>
@@ -67,13 +67,13 @@ export default function CategoryPageClient({ category, categoryPosts, user }: Pr
             <button
               key={post.id}
               className="aspect-square flex flex-col items-center justify-center cursor-pointer"
-              style={{ backgroundColor: post.coverColor }}
+              style={{ backgroundColor: post.cover_color }}
               onClick={() => setSelectedPost(post)}
             >
               <p className="text-white font-bold text-xs text-center px-2 leading-tight">
-                {post.bookTitle}
+                {post.book_title}
               </p>
-              <p className="text-white/60 text-[10px] mt-1">{post.bookAuthor}</p>
+              <p className="text-white/60 text-[10px] mt-1">{post.book_author}</p>
             </button>
           ))}
         </div>

@@ -86,9 +86,11 @@ export default function PostDetailModal({ post, user: userProp, onClose }: Props
   if (!post) return null;
 
   const yearLabel =
-    post.bookYear < 0
-      ? `기원전 ${Math.abs(post.bookYear)}년`
-      : `${post.bookYear}년`;
+    post.book_year < 0
+      ? `기원전 ${Math.abs(post.book_year)}년`
+      : `${post.book_year}년`;
+
+  const category = post.categories;
 
   return (
     <div
@@ -103,11 +105,11 @@ export default function PostDetailModal({ post, user: userProp, onClose }: Props
         {/* Cover */}
         <div
           className="w-full h-44 flex items-center justify-center shrink-0 rounded-t-2xl sm:rounded-t-2xl"
-          style={{ backgroundColor: post.coverColor }}
+          style={{ backgroundColor: post.cover_color }}
         >
           <div className="text-center">
-            <p className="text-white font-bold text-xl mb-1">{post.bookTitle}</p>
-            <p className="text-white/70 text-sm">{post.bookAuthor}</p>
+            <p className="text-white font-bold text-xl mb-1">{post.book_title}</p>
+            <p className="text-white/70 text-sm">{post.book_author}</p>
             <p className="text-white/50 text-xs mt-1">{yearLabel}</p>
           </div>
         </div>
@@ -123,9 +125,9 @@ export default function PostDetailModal({ post, user: userProp, onClose }: Props
         {/* Post info */}
         <div className="px-4 pt-4 pb-2 shrink-0">
           <div className="flex items-center gap-3 mb-2">
-            <CategoryAvatar category={post.category} size="sm" />
+            <CategoryAvatar category={category} size="sm" />
             <div>
-              <p className="font-semibold text-sm">{post.category.name}</p>
+              <p className="font-semibold text-sm">{category.name}</p>
             </div>
           </div>
           <p className="text-sm text-gray-700 leading-relaxed">{post.content}</p>

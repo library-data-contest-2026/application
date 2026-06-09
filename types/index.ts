@@ -3,20 +3,23 @@ export type Category = {
   name: string;
   description: string;
   avatar: string;
-  followerCount: number;
-  postCount: number;
+  follower_count?: number;
+  post_count?: number;
+  // camelCase aliases (mock data 호환)
+  followerCount?: number;
+  postCount?: number;
 };
 
 export type Post = {
   id: string;
-  categoryId: string;
-  category: Category;
-  bookTitle: string;
-  bookAuthor: string;
-  bookYear: number;
-  coverColor: string;
+  category_id: string;
+  categories: Category;
+  book_title: string;
+  book_author: string;
+  book_year: number;
+  cover_color: string;
   content: string;
-  likeCount: number;
-  commentCount: number;
+  like_count: number;
+  comment_count: number;
   tags: string[];
 };

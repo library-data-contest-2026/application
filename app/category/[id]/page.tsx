@@ -1,22 +1,22 @@
-import { categories, posts } from "@/lib/mockData";
 import { createClient } from "@/lib/supabase-server";
+import { notFound } from "next/navigation";
 import CategoryPageClient from "./CategoryPageClient";
 
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
 
-  const category = categories.find((c) => c.id === id);
-  const categoryPosts = posts.filter((p) => p.categoryId === id);
+  const [
+    { data: { user } },
+    { data: category },
+    { data: categoryPosts },
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from("categories").select("*").eq("id", id).single(),
+    supabase.from("posts").select("*, categories(*)").eq("category_id", id).order("created_at", { ascending: false }),
+  ]);
 
-  if (!category) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">존재하지 않는 카테고리입니다.</p>
-      </div>
-    );
-  }
+  if (!category) notFound();
 
-  return <CategoryPageClient category={category} categoryPosts={categoryPosts} user={user} />;
+  return <CategoryPageClient category={category} categoryPosts={categoryPosts ?? []} user={user} />;
 }
