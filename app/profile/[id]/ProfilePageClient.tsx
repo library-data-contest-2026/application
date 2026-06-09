@@ -24,6 +24,7 @@ type Props = {
   friendCount: number;
   isOwner: boolean;
   currentUserId: string | null;
+  friendshipStatus: "none" | "pending" | "accepted" | null;
 };
 
 const rarityColor: Record<string, string> = {
@@ -33,13 +34,14 @@ const rarityColor: Record<string, string> = {
   legendary: "bg-yellow-50 border-yellow-300",
 };
 
-export default function ProfilePageClient({ profile, trophies, friendCount, isOwner, currentUserId }: Props) {
+export default function ProfilePageClient({ profile, trophies, friendCount, isOwner, currentUserId, friendshipStatus }: Props) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [username, setUsername] = useState(profile.username);
   const [bio, setBio] = useState(profile.bio ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [reqStatus, setReqStatus] = useState(friendshipStatus);
 
   async function handleSave() {
     if (!username.trim()) return;
@@ -61,6 +63,16 @@ export default function ProfilePageClient({ profile, trophies, friendCount, isOw
     setEditing(false);
     setSaving(false);
     router.refresh();
+  }
+
+  async function handleAddFriend() {
+    if (!currentUserId) return;
+    const supabase = createClient();
+    await supabase.from("friendships").insert({
+      requester_id: currentUserId,
+      addressee_id: profile.id,
+    });
+    setReqStatus("pending");
   }
 
   async function handleLogout() {
@@ -164,10 +176,16 @@ export default function ProfilePageClient({ profile, trophies, friendCount, isOw
                 </button>
               )}
               {!isOwner && currentUserId && (
-                <Link
-                  href={`/friends?add=${profile.id}`}
-                  className="mt-3 w-full py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 block text-center"
+                <button
+                  onClick={handleAddFriend}
+                  disabled={reqStatus === "pending" || reqStatus === "accepted"}
+                  className="mt-3 w-full py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                 >
+                  {reqStatus === "accepted" ? "✓ 친구" : reqStatus === "pending" ? "요청 전송됨" : "친구 추가"}
+                </button>
+              )}
+              {!isOwner && !currentUserId && (
+                <Link href="/login" className="mt-3 w-full py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 block text-center">
                   친구 추가
                 </Link>
               )}

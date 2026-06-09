@@ -68,10 +68,10 @@ export default function Feed({ posts, categories, user }: Props) {
             <span className="text-xl">🔍</span>
             <span className="text-[10px] text-gray-500">탐색</span>
           </button>
-          <button className="flex flex-col items-center gap-0.5">
-            <span className="text-xl">📖</span>
-            <span className="text-[10px] text-gray-500">서재</span>
-          </button>
+          <Link href="/friends" className="flex flex-col items-center gap-0.5">
+            <span className="text-xl">🤝</span>
+            <span className="text-[10px] text-gray-500">친구</span>
+          </Link>
           {user ? (
             <Link href={`/profile/${user.id}`} className="flex flex-col items-center gap-0.5">
               <span className="text-xl">👤</span>
