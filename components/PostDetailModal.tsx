@@ -1,15 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { Post } from "@/types";
+import { User } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase-browser";
 import CategoryAvatar from "./CategoryAvatar";
+
+type Comment = {
+  id: string;
+  content: string;
+  created_at: string;
+  user_id: string;
+  profiles: { username: string } | null;
+};
 
 type Props = {
   post: Post | null;
+  user: User | null;
   onClose: () => void;
 };
 
-export default function PostDetailModal({ post, onClose }: Props) {
+export default function PostDetailModal({ post, user, onClose }: Props) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [input, setInput] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (!post) return;
     const handler = (e: KeyboardEvent) => {
@@ -23,6 +40,40 @@ export default function PostDetailModal({ post, onClose }: Props) {
     };
   }, [post, onClose]);
 
+  useEffect(() => {
+    if (!post) return;
+    setComments([]);
+
+    const supabase = createClient();
+    supabase
+      .from("comments")
+      .select("id, content, created_at, user_id, profiles(username)")
+      .eq("post_id", post.id)
+      .order("created_at", { ascending: true })
+      .then(({ data }) => {
+        if (data) setComments(data as unknown as Comment[]);
+      });
+  }, [post]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input.trim() || !user || !post) return;
+    setSubmitting(true);
+
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("comments")
+      .insert({ post_id: post.id, user_id: user.id, content: input.trim() })
+      .select("id, content, created_at, user_id, profiles(username)")
+      .single();
+
+    if (!error && data) {
+      setComments((prev) => [...prev, data as unknown as Comment]);
+      setInput("");
+    }
+    setSubmitting(false);
+  }
+
   if (!post) return null;
 
   const yearLabel =
@@ -32,21 +83,21 @@ export default function PostDetailModal({ post, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
-        className="relative bg-white rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden"
+        className="relative bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-sm shadow-2xl flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cover */}
         <div
-          className="w-full h-52 flex items-center justify-center"
+          className="w-full h-44 flex items-center justify-center shrink-0 rounded-t-2xl sm:rounded-t-2xl"
           style={{ backgroundColor: post.coverColor }}
         >
           <div className="text-center">
-            <p className="text-white font-bold text-2xl mb-1">{post.bookTitle}</p>
+            <p className="text-white font-bold text-xl mb-1">{post.bookTitle}</p>
             <p className="text-white/70 text-sm">{post.bookAuthor}</p>
             <p className="text-white/50 text-xs mt-1">{yearLabel}</p>
           </div>
@@ -60,30 +111,82 @@ export default function PostDetailModal({ post, onClose }: Props) {
           ✕
         </button>
 
-        {/* Body */}
-        <div className="p-4">
-          <div className="flex items-center gap-3 mb-3">
+        {/* Post info */}
+        <div className="px-4 pt-4 pb-2 shrink-0">
+          <div className="flex items-center gap-3 mb-2">
             <CategoryAvatar category={post.category} size="sm" />
             <div>
               <p className="font-semibold text-sm">{post.category.name}</p>
-              <p className="text-xs text-gray-400">{post.category.description}</p>
             </div>
           </div>
-
-          <p className="text-sm text-gray-800 leading-relaxed mb-3">{post.content}</p>
-
-          <div className="flex flex-wrap gap-1 mb-4">
+          <p className="text-sm text-gray-700 leading-relaxed">{post.content}</p>
+          <div className="flex flex-wrap gap-1 mt-2">
             {post.tags.map((tag) => (
               <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
                 #{tag}
               </span>
             ))}
           </div>
+        </div>
 
-          <div className="flex items-center gap-4 text-sm text-gray-500 border-t pt-3">
-            <span>♥ {post.likeCount.toLocaleString()}</span>
-            <span>💬 {post.commentCount}</span>
-          </div>
+        {/* Divider */}
+        <div className="border-t border-gray-100 mx-4 shrink-0" />
+
+        {/* Comments list */}
+        <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+          {comments.length === 0 ? (
+            <p className="text-xs text-gray-400 text-center py-4">
+              첫 번째 댓글을 남겨보세요
+            </p>
+          ) : (
+            comments.map((c) => (
+              <div key={c.id} className="flex gap-2">
+                <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
+                  {c.profiles?.username?.[0]?.toUpperCase() ?? "?"}
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-gray-900 mr-1">
+                    {c.profiles?.username ?? "알 수 없음"}
+                  </span>
+                  <span className="text-xs text-gray-700">{c.content}</span>
+                  <p className="text-[10px] text-gray-400 mt-0.5">
+                    {new Date(c.created_at).toLocaleDateString("ko-KR")}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Comment input */}
+        <div className="border-t border-gray-100 px-4 py-3 shrink-0">
+          {user ? (
+            <form onSubmit={handleSubmit} className="flex gap-2 items-center">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="댓글 달기..."
+                className="flex-1 text-sm outline-none bg-transparent placeholder-gray-400"
+                maxLength={200}
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || submitting}
+                className="text-sm font-semibold text-blue-500 disabled:opacity-30"
+              >
+                게시
+              </button>
+            </form>
+          ) : (
+            <Link
+              href="/login"
+              className="block text-center text-sm text-blue-500 font-semibold py-1"
+              onClick={onClose}
+            >
+              로그인하고 댓글 달기
+            </Link>
+          )}
         </div>
       </div>
     </div>

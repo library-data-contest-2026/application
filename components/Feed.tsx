@@ -88,7 +88,7 @@ export default function Feed({ posts, categories, user }: Props) {
 
       <div className="h-20" />
 
-      <PostDetailModal post={selectedPost} onClose={() => setSelectedPost(null)} />
+      <PostDetailModal post={selectedPost} user={user} onClose={() => setSelectedPost(null)} />
     </div>
   );
 }
