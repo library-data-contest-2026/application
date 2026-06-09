@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-browser";
 import BottomNav from "@/components/BottomNav";
@@ -21,15 +21,69 @@ type FriendRow = {
   profiles2: FriendProfile | null;
 };
 
+type SentRequest = {
+  id: string;
+  addressee_id: string;
+};
+
+type SearchResult = {
+  id: string;
+  username: string;
+};
+
 type Props = {
   currentUserId: string;
   received: ReceivedRequest[];
   friends: FriendRow[];
+  sent: SentRequest[];
 };
 
-export default function FriendsClient({ currentUserId, received: initialReceived, friends: initialFriends }: Props) {
+export default function FriendsClient({ currentUserId, received: initialReceived, friends: initialFriends, sent: initialSent }: Props) {
   const [received, setReceived] = useState(initialReceived);
   const [friends, setFriends] = useState(initialFriends);
+  const [sent, setSent] = useState(initialSent);
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) { setSearchResults([]); return; }
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      setSearching(true);
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("profiles")
+        .select("id, username")
+        .ilike("username", `%${q}%`)
+        .neq("id", currentUserId)
+        .limit(10);
+      setSearchResults((data as SearchResult[]) ?? []);
+      setSearching(false);
+    }, 300);
+
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [query, currentUserId]);
+
+  function getFriendStatus(userId: string): "accepted" | "sent" | "received" | "none" {
+    if (friends.some((f) => f.requester_id === userId || f.addressee_id === userId)) return "accepted";
+    if (sent.some((s) => s.addressee_id === userId)) return "sent";
+    if (received.some((r) => r.requester_id === userId)) return "received";
+    return "none";
+  }
+
+  async function handleSendRequest(addresseeId: string) {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from("friendships")
+      .insert({ requester_id: currentUserId, addressee_id: addresseeId })
+      .select("id, addressee_id")
+      .single();
+    if (data) setSent((prev) => [...prev, data]);
+  }
 
   async function handleAccept(id: string, requesterId: string, requesterProfile: FriendProfile | null) {
     const supabase = createClient();
@@ -72,6 +126,71 @@ export default function FriendsClient({ currentUserId, received: initialReceived
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-4 flex flex-col gap-6">
+        {/* 검색 */}
+        <section>
+          <div className="relative">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="사용자 이름으로 검색"
+              className="w-full pl-9 pr-4 py-2.5 bg-gray-100 rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-gray-200 transition-all"
+            />
+            {query && (
+              <button
+                onClick={() => { setQuery(""); setSearchResults([]); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {query.trim() && (
+            <div className="mt-2 bg-white rounded-xl border border-gray-200 overflow-hidden">
+              {searching ? (
+                <p className="text-sm text-gray-400 text-center py-4">검색 중...</p>
+              ) : searchResults.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-4">검색 결과가 없어요.</p>
+              ) : (
+                searchResults.map((result) => {
+                  const status = getFriendStatus(result.id);
+                  return (
+                    <div key={result.id} className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 last:border-b-0">
+                      <Link href={`/profile/${result.id}`} className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shrink-0 hover:opacity-80">
+                        {result.username[0].toUpperCase()}
+                      </Link>
+                      <Link href={`/profile/${result.id}`} className="flex-1 text-sm font-semibold text-gray-900 hover:underline">
+                        {result.username}
+                      </Link>
+                      {status === "accepted" && (
+                        <span className="text-xs text-gray-400 font-medium">친구</span>
+                      )}
+                      {status === "sent" && (
+                        <span className="text-xs text-gray-400 font-medium">요청 전송됨</span>
+                      )}
+                      {status === "received" && (
+                        <span className="text-xs text-blue-500 font-medium">요청 받음</span>
+                      )}
+                      {status === "none" && (
+                        <button
+                          onClick={() => handleSendRequest(result.id)}
+                          className="text-xs font-semibold px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        >
+                          친구 추가
+                        </button>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
+        </section>
         {/* 받은 요청 */}
         {received.length > 0 && (
           <section>

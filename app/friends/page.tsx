@@ -8,7 +8,7 @@ export default async function FriendsPage() {
 
   if (!user) redirect("/login");
 
-  const [{ data: received }, { data: friends }] = await Promise.all([
+  const [{ data: received }, { data: friends }, { data: sent }] = await Promise.all([
     supabase
       .from("friendships")
       .select("id, requester_id, profiles!friendships_requester_id_fkey(id, username)")
@@ -19,6 +19,11 @@ export default async function FriendsPage() {
       .select("id, requester_id, addressee_id, profiles!friendships_requester_id_fkey(id, username), profiles!friendships_addressee_id_fkey(id, username)")
       .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
       .eq("status", "accepted"),
+    supabase
+      .from("friendships")
+      .select("id, addressee_id")
+      .eq("requester_id", user.id)
+      .eq("status", "pending"),
   ]);
 
   return (
@@ -26,6 +31,7 @@ export default async function FriendsPage() {
       currentUserId={user.id}
       received={(received ?? []) as any}
       friends={(friends ?? []) as any}
+      sent={(sent ?? []) as any}
     />
   );
 }
