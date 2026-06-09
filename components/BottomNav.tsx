@@ -44,7 +44,7 @@ export default function BottomNav({ userId }: Props) {
 
   const profileHref = userId ? `/profile/${userId}` : "/login";
   const isHome = pathname === "/";
-  const isSearch = pathname?.startsWith("/category");
+  const isSearch = pathname === "/search";
   const isQuiz = pathname?.startsWith("/quiz");
   const isProfile = pathname?.startsWith("/profile");
 
@@ -55,10 +55,10 @@ export default function BottomNav({ userId }: Props) {
           <HomeIcon active={isHome} />
           <span className="text-[10px]">홈</span>
         </Link>
-        <button className={`flex flex-col items-center gap-0.5 ${isSearch ? "text-black" : "text-gray-400"}`}>
+        <Link href="/search" className={`flex flex-col items-center gap-0.5 ${isSearch ? "text-black" : "text-gray-400"}`}>
           <SearchIcon active={!!isSearch} />
           <span className="text-[10px]">탐색</span>
-        </button>
+        </Link>
         <Link href="/quiz" className={`flex flex-col items-center gap-0.5 ${isQuiz ? "text-black" : "text-gray-400"}`}>
           <QuizIcon active={!!isQuiz} />
           <span className="text-[10px]">퀴즈</span>
