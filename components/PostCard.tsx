@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Post } from "@/types";
+import { User } from "@supabase/supabase-js";
 import CategoryAvatar from "./CategoryAvatar";
 
 type Props = {
   post: Post;
+  user: User | null;
   onOpenDetail: (post: Post) => void;
 };
 
-export default function PostCard({ post, onOpenDetail }: Props) {
+export default function PostCard({ post, user, onOpenDetail }: Props) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likeCount);
 
@@ -55,12 +58,16 @@ export default function PostCard({ post, onOpenDetail }: Props) {
 
       {/* Actions */}
       <div className="px-4 py-2 flex items-center gap-4">
-        <button
-          onClick={handleLike}
-          className={`text-2xl transition-transform active:scale-125 ${liked ? "text-red-500" : "text-gray-800"}`}
-        >
-          {liked ? "♥" : "♡"}
-        </button>
+        {user ? (
+          <button
+            onClick={handleLike}
+            className={`text-2xl transition-transform active:scale-125 ${liked ? "text-red-500" : "text-gray-800"}`}
+          >
+            {liked ? "♥" : "♡"}
+          </button>
+        ) : (
+          <Link href="/login" className="text-2xl text-gray-800">♡</Link>
+        )}
         <button
           onClick={() => onOpenDetail(post)}
           className="text-2xl text-gray-800"
