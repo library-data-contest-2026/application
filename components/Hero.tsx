@@ -4,21 +4,41 @@ import Link from "next/link";
 import { Book } from "@/data/books";
 
 export default function Hero({ book }: { book: Book }) {
+  const embedUrl = book.video_id
+    ? `https://www.youtube.com/embed/${book.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${book.video_id}&rel=0&iv_load_policy=3&disablekb=1`
+    : null;
 
   return (
-    <section
-      className="relative w-full h-screen min-h-[600px] flex items-end"
-      style={{
-        background: `linear-gradient(135deg, ${book.cover_color} 0%, #111 100%)`,
-      }}
-    >
-      {/* 하단 페이드 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/20 to-transparent" />
-      {/* 우측 페이드 */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#111]/60" />
+    <section className="relative w-full h-screen min-h-[600px] flex items-end overflow-hidden">
+
+      {/* 배경: 비디오 or 컬러 그라디언트 */}
+      {embedUrl ? (
+        <div className="absolute inset-0 bg-black">
+          <iframe
+            src={embedUrl}
+            allow="autoplay; encrypted-media"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: "max(100%, 177.78vh)",
+              height: "max(56.25vw, 100%)",
+              pointerEvents: "none",
+              border: "none",
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(135deg, ${book.cover_color} 0%, #111 100%)` }}
+        />
+      )}
+
+      {/* 오버레이 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/40 to-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#111]/60 via-transparent to-[#111]/40" />
 
       {/* 구조 배지 — 우상단 */}
-      <div className="absolute top-28 right-8 md:right-16 flex flex-col gap-2 items-end">
+      <div className="absolute top-28 right-8 md:right-16 flex flex-col gap-2 items-end z-10">
         <span className="px-3 py-1 bg-red-600/90 text-white text-xs font-bold rounded-full tracking-wider">
           🚨 이번 달 구조도서
         </span>
@@ -92,7 +112,7 @@ export default function Hero({ book }: { book: Book }) {
       </div>
 
       {/* 장르 태그 */}
-      <div className="absolute bottom-6 right-8 md:right-16 flex gap-2">
+      <div className="absolute bottom-6 right-8 md:right-16 flex gap-2 z-10">
         {book.tags.slice(0, 3).map((tag) => (
           <span key={tag} className="px-2.5 py-1 bg-white/10 text-gray-300 text-xs rounded-full border border-white/10">
             #{tag}
