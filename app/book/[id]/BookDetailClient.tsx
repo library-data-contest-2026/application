@@ -160,11 +160,11 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           <p className="text-gray-500 text-sm mb-6">키워드 → LLM 스크립트 → TTS·모션그래픽으로 자동 생성된 30초 예고편</p>
 
           {book.video_id ? (
-            <div className="aspect-video w-full max-w-2xl rounded-2xl overflow-hidden bg-black">
+            <div className="aspect-video w-full max-w-2xl rounded-2xl overflow-hidden bg-black shadow-2xl">
               <iframe
-                src={`https://www.youtube.com/embed/${book.video_id}?autoplay=${showVideo ? 1 : 0}`}
+                src={`https://www.youtube.com/embed/${book.video_id}?autoplay=1&rel=0`}
                 className="w-full h-full"
-                allow="autoplay; encrypted-media"
+                allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
               />
             </div>

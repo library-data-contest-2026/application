@@ -42,7 +42,7 @@ export const books: Book[] = [
     librarian_comment: "당신이 지나친 최고의 책",
     summary: "1980년 5월, 광주. 아직 살아있는 자들과 이미 죽은 자들 사이에 남겨진 이야기. 노벨문학상 수상 작가 한강의 대표작.",
     rescue_reason: "사서 만점 추천에 수상 이력도 화려하지만, 4년간 대출 13회. 독자와 만나지 못한 채 잠들어 있었습니다.",
-    video_id: null,
+    video_id: "dQw4w9WgXcQ",
     tags: ["5.18", "역사", "노벨문학상", "성장"],
     scores: { loan: 15, rating: 97, librarian: 100, awards: 100, keywords: 88 },
     similar_books: ["채식주의자", "흰"],
