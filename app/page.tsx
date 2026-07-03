@@ -11,6 +11,12 @@ export default function Home() {
 
   return (
     <main className="bg-[#111] min-h-screen">
+      {/* 공모전 안내 배너 */}
+      <div className="bg-[#003087] text-white text-xs text-center py-2 px-4 flex items-center justify-center gap-2">
+        <span className="opacity-80">2026 도서관 데이터 활용 공모전 출품작</span>
+        <span className="opacity-40">|</span>
+        <span className="font-semibold">국립중앙도서관 · 정보나루 빅데이터 활용</span>
+      </div>
       <Nav />
       <Hero book={monthlyPick} />
 
@@ -42,16 +48,33 @@ export default function Home() {
       </div>
 
       {/* 푸터 */}
-      <footer className="border-t border-white/10 py-8 px-6 md:px-16 text-gray-600 text-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-4">
-          <div>
-            <p className="text-white font-bold mb-1">BOOK RESCUE</p>
-            <p>데이터가 발견하고 AI가 되살리는 도서관 콘텐츠</p>
-            <p className="mt-1">2026 도서관 데이터 활용 공모전</p>
+      <footer className="border-t border-white/10 pt-10 pb-8 px-6 md:px-16 text-gray-500 text-xs">
+        <div className="max-w-7xl mx-auto">
+
+          {/* 상단: 로고 + 설명 + 링크 */}
+          <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-white font-black text-base tracking-tight">BOOK RESCUE</span>
+                <span className="px-2 py-0.5 bg-[#003087] text-white text-[10px] font-semibold rounded">국립중앙도서관</span>
+              </div>
+              <p className="text-gray-500 max-w-sm leading-relaxed">
+                데이터가 발견하고 AI가 되살리는 도서관 콘텐츠.<br />
+                저평가된 책을 발굴해 독자와 연결합니다.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <p className="text-gray-400 font-semibold mb-1">데이터 출처</p>
+              <a href="https://www.data4library.kr/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">정보나루 (도서관 빅데이터)</a>
+              <a href="https://www.nl.go.kr/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">국립중앙도서관</a>
+            </div>
           </div>
-          <div className="flex gap-6">
-            <a href="https://www.data4library.kr/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">정보나루</a>
-            <a href="https://www.nl.go.kr/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">국립중앙도서관</a>
+
+          {/* 구분선 */}
+          <div className="border-t border-white/5 pt-6 flex flex-col md:flex-row justify-between gap-2">
+            <p>© 2026 Book Rescue · 2026 도서관 데이터 활용 공모전 출품작</p>
+            <p>데이터 출처: 국립중앙도서관 정보나루 공공데이터 · 비상업적 교육 목적</p>
           </div>
         </div>
       </footer>
