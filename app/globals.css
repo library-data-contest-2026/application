@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F5F7FA;
-  --foreground: #0d1b2a;
+  --background: #f2f4f5;
+  --foreground: #1d1d1d;
+  --nl-navy: #003675;
+  --nl-blue: #1d77b7;
+  --nl-teal: #329bba;
+  --nl-gold: #edb54c;
+  --nl-pale: #edf1f5;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
 * {

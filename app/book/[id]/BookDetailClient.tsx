@@ -17,7 +17,7 @@ const scoreLabels: Record<string, string> = {
 const scoreColors: Record<string, string> = {
   loan: "bg-red-400",
   rating: "bg-blue-400",
-  librarian: "bg-[#003087]",
+  librarian: "bg-[#003675]",
   awards: "bg-purple-400",
   keywords: "bg-emerald-400",
 };
@@ -31,15 +31,15 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <div className="bg-[#F5F7FA] min-h-screen text-gray-900">
+    <div className="bg-[#f2f4f5] min-h-screen text-gray-900">
       <Nav />
 
       {/* 히어로 */}
       <div
         className="relative w-full pt-20 pb-16 px-6 md:px-16"
-        style={{ background: `linear-gradient(135deg, ${book.cover_color}40 0%, #F5F7FA 60%)` }}
+        style={{ background: `linear-gradient(135deg, ${book.cover_color}40 0%, #f2f4f5 60%)` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#F5F7FA]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#f2f4f5]" />
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-start">
 
           {/* 책 커버 */}
@@ -60,8 +60,8 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
               <span className="px-3 py-1 bg-red-100 border border-red-200 text-red-600 text-xs font-bold rounded-full">
                 대출 하위 {book.loan_percentile}%
               </span>
-              <span className="px-3 py-1 bg-blue-50 border border-blue-200 text-[#003087] text-xs font-semibold rounded-full">
-                {"★".repeat(book.librarian_stars)} 사서추천
+              <span className="px-3 py-1 bg-[#edf1f5] border border-[#c6c6c6] text-[#003675] text-xs font-semibold rounded-full">
+                <span style={{ color: "#edb54c" }}>{"★".repeat(book.librarian_stars)}</span> 사서추천
               </span>
               <span className="px-3 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
                 {book.genre}
@@ -88,7 +88,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
                   </>
                 ) : (
                   <>
-                    <p className="text-3xl font-black text-[#003087]">?</p>
+                    <p className="text-3xl font-black text-[#003675]">?</p>
                     <p className="text-xs text-blue-400 mt-1">구조 진행 중</p>
                   </>
                 )}
@@ -99,7 +99,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowVideo(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-[#003087] hover:bg-[#002270] text-white font-bold rounded-lg transition-colors shadow-md"
+                className="flex items-center gap-2 px-6 py-3 bg-[#003675] hover:bg-[#002a5c] text-white font-bold rounded-lg transition-colors shadow-md"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 30초 예고편
@@ -149,7 +149,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
             ))}
 
             <div className="pt-4 border-t border-gray-100">
-              <p className="text-[#003087] text-sm font-semibold">" {book.rescue_reason} "</p>
+              <p className="text-[#003675] text-sm font-semibold">" {book.rescue_reason} "</p>
             </div>
           </div>
         </section>
@@ -171,12 +171,12 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           ) : (
             <div
               onClick={() => setShowVideo(!showVideo)}
-              className="relative aspect-video w-full max-w-2xl rounded-2xl overflow-hidden border border-gray-200 flex items-center justify-center cursor-pointer group hover:border-[#003087] transition-colors bg-white shadow-sm"
-              style={{ background: `linear-gradient(135deg, ${book.cover_color}15 0%, #F5F7FA 100%)` }}
+              className="relative aspect-video w-full max-w-2xl rounded-2xl overflow-hidden border border-gray-200 flex items-center justify-center cursor-pointer group hover:border-[#003675] transition-colors bg-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${book.cover_color}15 0%, #f2f4f5 100%)` }}
             >
               <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-[#003087]/10 border-2 border-[#003087] flex items-center justify-center mx-auto mb-3 group-hover:bg-[#003087]/20 transition-colors">
-                  <svg className="w-7 h-7 text-[#003087] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 rounded-full bg-[#003675]/10 border-2 border-[#003675] flex items-center justify-center mx-auto mb-3 group-hover:bg-[#003675]/20 transition-colors">
+                  <svg className="w-7 h-7 text-[#003675] ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
                 </div>
@@ -207,7 +207,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           <h2 className="text-xl font-bold mb-4 text-gray-900">키워드</h2>
           <div className="flex flex-wrap gap-2">
             {book.tags.map((tag) => (
-              <span key={tag} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-500 text-sm rounded-full hover:border-[#003087] hover:text-[#003087] transition-colors cursor-pointer shadow-sm">
+              <span key={tag} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-500 text-sm rounded-full hover:border-[#003675] hover:text-[#003675] transition-colors cursor-pointer shadow-sm">
                 #{tag}
               </span>
             ))}
@@ -215,7 +215,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
         </section>
 
         <div className="flex justify-center pt-4">
-          <Link href="/" className="flex items-center gap-2 text-gray-400 hover:text-[#003087] text-sm transition-colors">
+          <Link href="/" className="flex items-center gap-2 text-gray-400 hover:text-[#003675] text-sm transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -235,7 +235,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
               href={book.library_url}
               target="_blank"
               rel="noreferrer"
-              className="block w-full py-3 bg-[#003087] text-white font-bold rounded-lg text-sm hover:bg-[#002270] transition-colors"
+              className="block w-full py-3 bg-[#003675] text-white font-bold rounded-lg text-sm hover:bg-[#002a5c] transition-colors"
             >
               지금 바로 도서관에서 대출하기
             </a>
