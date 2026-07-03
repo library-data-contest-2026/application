@@ -1,10 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Book } from "@/data/books";
 
 export default function Hero({ book }: { book: Book }) {
-  const router = useRouter();
 
   return (
     <section
@@ -71,24 +70,24 @@ export default function Hero({ book }: { book: Book }) {
 
         {/* CTA */}
         <div className="flex gap-3">
-          <button
-            onClick={() => router.push(`/book/${book.id}`)}
+          <Link
+            href={`/book/${book.id}`}
             className="flex items-center gap-2 px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-lg transition-colors text-sm"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
             </svg>
             구조하기
-          </button>
-          <button
-            onClick={() => router.push(`/book/${book.id}`)}
+          </Link>
+          <Link
+            href={`/book/${book.id}`}
             className="flex items-center gap-2 px-8 py-3.5 bg-white/20 hover:bg-white/30 text-white font-semibold rounded-lg transition-colors text-sm backdrop-blur-sm"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             상세 정보
-          </button>
+          </Link>
         </div>
       </div>
 

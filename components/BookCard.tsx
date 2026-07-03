@@ -1,14 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Book } from "@/data/books";
 
 export default function BookCard({ book }: { book: Book }) {
-  const router = useRouter();
-
   return (
-    <div
-      onClick={() => router.push(`/book/${book.id}`)}
+    <Link
+      href={`/book/${book.id}`}
       className="group relative flex-shrink-0 w-40 md:w-48 cursor-pointer"
     >
       {/* 책 커버 */}
@@ -60,6 +58,6 @@ export default function BookCard({ book }: { book: Book }) {
         <p className="text-white text-xs font-medium truncate">{book.title}</p>
         <p className="text-gray-500 text-[11px] mt-0.5">{book.genre}</p>
       </div>
-    </div>
+    </Link>
   );
 }
