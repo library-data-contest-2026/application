@@ -22,15 +22,15 @@ export default function BookRow({ title, books }: Props) {
 
   return (
     <section className="mb-10">
-      <h2 className="text-white font-bold text-lg md:text-xl mb-4 px-6 md:px-16">{title}</h2>
+      <h2 className="text-gray-800 font-bold text-lg md:text-xl mb-4 px-6 md:px-16">{title}</h2>
 
       <div className="relative group/row">
         {/* 좌측 버튼 */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-0 bottom-8 z-10 w-12 bg-gradient-to-r from-[#111] to-transparent flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-opacity"
+          className="absolute left-0 top-0 bottom-8 z-10 w-12 bg-gradient-to-r from-[#F5F7FA] to-transparent flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-opacity"
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
@@ -48,9 +48,9 @@ export default function BookRow({ title, books }: Props) {
         {/* 우측 버튼 */}
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-0 bottom-8 z-10 w-12 bg-gradient-to-l from-[#111] to-transparent flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-opacity"
+          className="absolute right-0 top-0 bottom-8 z-10 w-12 bg-gradient-to-l from-[#F5F7FA] to-transparent flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-opacity"
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
