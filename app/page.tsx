@@ -24,7 +24,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6 md:px-16 py-8">
         <div className="grid grid-cols-3 gap-4 p-6 bg-white/5 border border-white/10 rounded-2xl">
           <div className="text-center">
-            <p className="text-2xl md:text-3xl font-black text-amber-400">{books.length}권</p>
+            <p className="text-2xl md:text-3xl font-black text-blue-400">{books.length}권</p>
             <p className="text-xs text-gray-500 mt-1">이번 달 구조 도서</p>
           </div>
           <div className="text-center border-x border-white/10">

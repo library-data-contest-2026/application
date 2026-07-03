@@ -42,14 +42,14 @@ export default function Hero({ book }: { book: Book }) {
         <span className="px-3 py-1 bg-red-600/90 text-white text-xs font-bold rounded-full tracking-wider">
           🚨 이번 달 구조도서
         </span>
-        <span className="px-3 py-1 bg-black/60 border border-amber-400/50 text-amber-400 text-xs font-semibold rounded-full">
+        <span className="px-3 py-1 bg-black/60 border border-blue-400/50 text-blue-400 text-xs font-semibold rounded-full">
           대출순위 하위 {book.loan_percentile}%
         </span>
       </div>
 
       {/* 메인 콘텐츠 */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 pb-24 w-full">
-        <p className="text-amber-400 text-sm font-semibold tracking-widest mb-3 uppercase">
+        <p className="text-blue-400 text-sm font-semibold tracking-widest mb-3 uppercase">
           잠자는 책을 깨우다
         </p>
 
@@ -64,12 +64,12 @@ export default function Hero({ book }: { book: Book }) {
         <div className="flex items-center gap-2 mb-4">
           <div className="flex gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
-              <span key={i} className={`text-lg ${i < book.librarian_stars ? "text-amber-400" : "text-gray-700"}`}>★</span>
+              <span key={i} className={`text-lg ${i < book.librarian_stars ? "text-blue-400" : "text-gray-700"}`}>★</span>
             ))}
           </div>
           <span className="text-gray-300 text-sm">사서추천</span>
           <span className="text-gray-500 mx-2">·</span>
-          <span className="text-amber-400 text-sm font-semibold">"{book.librarian_comment}"</span>
+          <span className="text-blue-400 text-sm font-semibold">"{book.librarian_comment}"</span>
         </div>
 
         <p className="text-gray-300 text-base md:text-lg max-w-xl leading-relaxed mb-8">
@@ -92,7 +92,7 @@ export default function Hero({ book }: { book: Book }) {
         <div className="flex gap-3">
           <Link
             href={`/book/${book.id}`}
-            className="flex items-center gap-2 px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-lg transition-colors text-sm"
+            className="flex items-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors text-sm"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>

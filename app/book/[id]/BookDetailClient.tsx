@@ -17,7 +17,7 @@ const scoreLabels: Record<string, string> = {
 const scoreColors: Record<string, string> = {
   loan: "bg-red-500",
   rating: "bg-blue-400",
-  librarian: "bg-amber-400",
+  librarian: "bg-blue-500",
   awards: "bg-purple-400",
   keywords: "bg-emerald-400",
 };
@@ -60,7 +60,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
               <span className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">
                 대출 하위 {book.loan_percentile}%
               </span>
-              <span className="px-3 py-1 bg-amber-500/20 border border-amber-500/50 text-amber-400 text-xs font-semibold rounded-full">
+              <span className="px-3 py-1 bg-blue-500/20 border border-blue-500/50 text-blue-400 text-xs font-semibold rounded-full">
                 {"★".repeat(book.librarian_stars)} 사서추천
               </span>
               <span className="px-3 py-1 bg-white/10 text-gray-300 text-xs rounded-full">
@@ -88,8 +88,8 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
                   </>
                 ) : (
                   <>
-                    <p className="text-3xl font-black text-amber-400">?</p>
-                    <p className="text-xs text-amber-600 mt-1">구조 진행 중</p>
+                    <p className="text-3xl font-black text-blue-400">?</p>
+                    <p className="text-xs text-blue-500 mt-1">구조 진행 중</p>
                   </>
                 )}
               </div>
@@ -99,7 +99,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowVideo(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-black font-bold rounded-lg transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 30초 예고편
@@ -149,7 +149,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
             ))}
 
             <div className="pt-4 border-t border-white/10">
-              <p className="text-amber-400 text-sm font-semibold">" {book.rescue_reason} "</p>
+              <p className="text-blue-400 text-sm font-semibold">" {book.rescue_reason} "</p>
             </div>
           </div>
         </section>
@@ -171,12 +171,12 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           ) : (
             <div
               onClick={() => setShowVideo(!showVideo)}
-              className="relative aspect-video w-full max-w-2xl rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-black border border-white/10 flex items-center justify-center cursor-pointer group hover:border-amber-400/50 transition-colors"
+              className="relative aspect-video w-full max-w-2xl rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-black border border-white/10 flex items-center justify-center cursor-pointer group hover:border-blue-400/50 transition-colors"
               style={{ background: `linear-gradient(135deg, ${book.cover_color}80 0%, #000 100%)` }}
             >
               <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-400/30 transition-colors">
-                  <svg className="w-7 h-7 text-amber-400 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 rounded-full bg-blue-500/20 border-2 border-blue-500 flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-500/30 transition-colors">
+                  <svg className="w-7 h-7 text-blue-400 ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
                 </div>
@@ -207,7 +207,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           <h2 className="text-xl font-bold mb-4">키워드</h2>
           <div className="flex flex-wrap gap-2">
             {book.tags.map((tag) => (
-              <span key={tag} className="px-3 py-1.5 bg-white/5 border border-white/10 text-gray-300 text-sm rounded-full hover:border-amber-400/50 transition-colors cursor-pointer">
+              <span key={tag} className="px-3 py-1.5 bg-white/5 border border-white/10 text-gray-300 text-sm rounded-full hover:border-blue-400/50 transition-colors cursor-pointer">
                 #{tag}
               </span>
             ))}
@@ -235,7 +235,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
               href={book.library_url}
               target="_blank"
               rel="noreferrer"
-              className="block w-full py-3 bg-amber-400 text-black font-bold rounded-lg text-sm hover:bg-amber-300 transition-colors"
+              className="block w-full py-3 bg-blue-600 text-white font-bold rounded-lg text-sm hover:bg-blue-500 transition-colors"
             >
               지금 바로 도서관에서 대출하기
             </a>

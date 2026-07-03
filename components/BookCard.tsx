@@ -21,7 +21,7 @@ export default function BookCard({ book }: { book: Book }) {
               <span className="text-[9px] font-bold bg-red-600 text-white px-1.5 py-0.5 rounded-full">이달의 구조</span>
             )}
             {book.is_weekly_new && !book.is_monthly_pick && (
-              <span className="text-[9px] font-bold bg-amber-500 text-black px-1.5 py-0.5 rounded-full">NEW</span>
+              <span className="text-[9px] font-bold bg-blue-600 text-white px-1.5 py-0.5 rounded-full">NEW</span>
             )}
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function BookCard({ book }: { book: Book }) {
           <div className="flex items-center gap-1 mb-2">
             <span className="text-[10px] text-red-400 font-semibold">대출 하위 {book.loan_percentile}%</span>
             <span className="text-gray-600 text-[10px]">·</span>
-            <span className="text-[10px] text-amber-400">{"★".repeat(book.librarian_stars)}</span>
+            <span className="text-[10px] text-blue-400">{"★".repeat(book.librarian_stars)}</span>
           </div>
 
           <div className="flex flex-wrap gap-1 mb-3">
@@ -47,7 +47,7 @@ export default function BookCard({ book }: { book: Book }) {
             ))}
           </div>
 
-          <button className="w-full py-1.5 bg-amber-400 hover:bg-amber-300 text-black text-xs font-bold rounded-md transition-colors">
+          <button className="w-full py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-md transition-colors">
             ▶ 구조하기
           </button>
         </div>
