@@ -1,6 +1,7 @@
 import { books } from "@/data/books";
 import Nav from "@/components/Nav";
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color: string }) {
   return (
@@ -63,12 +64,14 @@ export default function StatusPage() {
         </div>
 
         {/* 요약 통계 */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <StatCard label="총 발굴 도서" value={`${books.length}권`} color="#003675" />
-          <StatCard label="구조 완료" value={`${rescued.length}권`} sub={`대출 증가 확인`} color="#059669" />
-          <StatCard label="구조 진행 중" value={`${inProgress.length}권`} sub={`AI 북트레일러 제작 중`} color="#1d77b7" />
-          <StatCard label="사서 별점 5점" value={`${fiveStar.length}권`} sub={`전체 ${books.length}권 중`} color="#edb54c" />
-        </div>
+        <ScrollReveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <StatCard label="총 발굴 도서" value={`${books.length}권`} color="#003675" />
+            <StatCard label="구조 완료" value={`${rescued.length}권`} sub={`대출 증가 확인`} color="#059669" />
+            <StatCard label="구조 진행 중" value={`${inProgress.length}권`} sub={`AI 북트레일러 제작 중`} color="#1d77b7" />
+            <StatCard label="사서 별점 5점" value={`${fiveStar.length}권`} sub={`전체 ${books.length}권 중`} color="#edb54c" />
+          </div>
+        </ScrollReveal>
 
         <div className="grid md:grid-cols-2 gap-6 mb-10">
 
@@ -158,6 +161,7 @@ export default function StatusPage() {
         </div>
 
         {/* 전체 통계 요약 */}
+        <ScrollReveal>
         <div className="rounded-lg p-6 md:p-8" style={{ background: "linear-gradient(-45deg, #003675, #1d77b7)" }}>
           <h2 className="text-white font-bold text-sm mb-4">프로젝트 성과 요약</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -183,6 +187,7 @@ export default function StatusPage() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
 
       </div>
     </div>

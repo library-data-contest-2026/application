@@ -2,6 +2,7 @@ import { books, monthlyPick, weeklyNew } from "@/data/books";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import BookRow from "@/components/BookRow";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
   const literature = books.filter((b) => ["문학", "소설", "성장소설"].includes(b.genre));
@@ -22,7 +23,7 @@ export default function Home() {
       <Hero book={monthlyPick} />
 
       {/* 통계 배너 */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 py-8">
+      <ScrollReveal className="max-w-7xl mx-auto px-6 md:px-16 py-8">
         <div className="grid grid-cols-3 gap-0 bg-white border border-[#dcdcdc] rounded-lg shadow-sm overflow-hidden">
           <div className="text-center py-6 px-4">
             <p className="text-2xl md:text-3xl font-black text-[#003675]">{books.length}권</p>
@@ -37,7 +38,7 @@ export default function Home() {
             <p className="text-xs text-[#868686] mt-1">평균 대출 증가율</p>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* 책 열들 */}
       <div className="pb-20 space-y-2">
