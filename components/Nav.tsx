@@ -35,8 +35,8 @@ export default function Nav() {
         {/* 가운데 메뉴 */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#555]">
           <Link href="/" className="hover:text-[#003675] transition-colors py-1 border-b-2 border-transparent hover:border-[#003675]">이번 달 구조도서</Link>
-          <Link href="/" className="hover:text-[#003675] transition-colors py-1 border-b-2 border-transparent hover:border-[#003675]">장르별 탐색</Link>
-          <Link href="/" className="hover:text-[#003675] transition-colors py-1 border-b-2 border-transparent hover:border-[#003675]">구조 현황</Link>
+          <Link href="/genres" className="hover:text-[#003675] transition-colors py-1 border-b-2 border-transparent hover:border-[#003675]">장르별 탐색</Link>
+          <Link href="/status" className="hover:text-[#003675] transition-colors py-1 border-b-2 border-transparent hover:border-[#003675]">구조 현황</Link>
         </div>
 
         {/* 오른쪽: AI 운영 상태 */}
