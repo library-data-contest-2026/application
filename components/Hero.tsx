@@ -5,28 +5,29 @@ import Link from "next/link";
 import { Book } from "@/data/books";
 
 export default function Hero({ book }: { book: Book }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hovered, setHovered] = useState(false);
 
-  const embedUrl = book.video_id
+  const hasLocalVideo = !!book.video_path;
+  const embedUrl = !hasLocalVideo && book.video_id
     ? `https://www.youtube.com/embed/${book.video_id}?autoplay=0&mute=1&controls=0&loop=1&playlist=${book.video_id}&rel=0&iv_load_policy=3&disablekb=1&enablejsapi=1`
     : null;
 
-  function sendCommand(command: string) {
-    iframeRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: "command", func: command, args: [] }),
-      "*"
-    );
-  }
-
   function handleEnter() {
     setHovered(true);
-    if (embedUrl) sendCommand("playVideo");
+    if (hasLocalVideo) videoRef.current?.play();
+    else if (embedUrl) iframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func: "playVideo", args: [] }), "*"
+    );
   }
 
   function handleLeave() {
     setHovered(false);
-    if (embedUrl) sendCommand("pauseVideo");
+    if (hasLocalVideo) { videoRef.current?.pause(); }
+    else if (embedUrl) iframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*"
+    );
   }
 
   return (
@@ -36,7 +37,19 @@ export default function Hero({ book }: { book: Book }) {
       onMouseLeave={handleLeave}
     >
       {/* 배경 */}
-      {embedUrl ? (
+      {hasLocalVideo ? (
+        <div className="absolute inset-0 bg-[#1a2a3a]">
+          <video
+            ref={videoRef}
+            src={book.video_path!}
+            muted
+            loop
+            playsInline
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{ width: "max(100%, 177.78vh)", height: "max(56.25vw, 100%)", objectFit: "cover", pointerEvents: "none" }}
+          />
+        </div>
+      ) : embedUrl ? (
         <div className="absolute inset-0 bg-[#1a2a3a]">
           <iframe
             ref={iframeRef}
