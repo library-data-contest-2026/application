@@ -8,6 +8,7 @@ export default function Hero({ book }: { book: Book }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   const hasLocalVideo = !!book.video_path;
   const embedUrl = !hasLocalVideo && book.video_id
@@ -24,10 +25,22 @@ export default function Hero({ book }: { book: Book }) {
 
   function handleLeave() {
     setHovered(false);
-    if (hasLocalVideo) { videoRef.current?.pause(); }
-    else if (embedUrl) iframeRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*"
-    );
+    if (hasLocalVideo) {
+      videoRef.current?.pause();
+      setMuted(true);
+    } else if (embedUrl) {
+      iframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*"
+      );
+    }
+  }
+
+  function toggleMute(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    const next = !muted;
+    videoRef.current.muted = next;
+    setMuted(next);
   }
 
   return (
@@ -47,6 +60,24 @@ export default function Hero({ book }: { book: Book }) {
             playsInline
             style={{ width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }}
           />
+          {/* 음소거 토글 버튼 */}
+          {hovered && (
+            <button
+              onClick={toggleMute}
+              className="absolute bottom-8 right-8 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all"
+              style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.3)" }}
+            >
+              {muted ? (
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06A8.99 8.99 0 0017.73 18l1.98 2L21 18.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              )}
+            </button>
+          )}
         </div>
       ) : embedUrl ? (
         <div className="absolute inset-0 bg-[#1a2a3a]">
