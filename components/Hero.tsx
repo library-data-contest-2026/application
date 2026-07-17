@@ -38,15 +38,14 @@ export default function Hero({ book }: { book: Book }) {
     >
       {/* 배경 */}
       {hasLocalVideo ? (
-        <div className="absolute inset-0 bg-[#1a2a3a]">
+        <div className="absolute inset-0 bg-[#1a2a3a] flex items-center justify-center">
           <video
             ref={videoRef}
             src={book.video_path!}
             muted
             loop
             playsInline
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ width: "max(100%, 177.78vh)", height: "max(56.25vw, 100%)", objectFit: "cover", pointerEvents: "none" }}
+            style={{ width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }}
           />
         </div>
       ) : embedUrl ? (
