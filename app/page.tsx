@@ -5,10 +5,11 @@ import BookRow from "@/components/BookRow";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
-  const literature = books.filter((b) => ["문학", "소설", "성장소설"].includes(b.genre));
-  const thriller = books.filter((b) => ["추리", "스릴러"].includes(b.genre));
-  const history = books.filter((b) => b.genre === "역사소설");
-  const allBooks = [...books].sort((a, b) => a.loan_percentile - b.loan_percentile);
+  const nonPick = books.filter((b) => !b.is_monthly_pick);
+  const allBooks = [...nonPick].sort((a, b) => a.loan_percentile - b.loan_percentile);
+  const science = nonPick.filter((b) => ["과학", "교양", "환경"].includes(b.genre));
+  const essay = nonPick.filter((b) => ["에세이", "예술"].includes(b.genre));
+  const mind = nonPick.filter((b) => ["심리", "육아"].includes(b.genre));
 
   return (
     <main className="bg-[#f2f4f5] min-h-screen">
@@ -42,11 +43,11 @@ export default function Home() {
 
       {/* 책 열들 */}
       <div className="pb-20 space-y-2">
-        <BookRow title="이번 주 새롭게 구조된 책" books={weeklyNew} />
+        <BookRow title="이번 주 새롭게 구조된 책" books={weeklyNew.filter(b => !b.is_monthly_pick)} />
         <BookRow title="가장 깊이 잠든 책들" books={allBooks} />
-        <BookRow title="문학 속 숨겨진 명작" books={literature} />
-        <BookRow title="추리·스릴러 속 잠든 책" books={thriller} />
-        <BookRow title="역사 속 묻힌 이야기" books={history} />
+        <BookRow title="과학·교양 속 잠든 책" books={science} />
+        <BookRow title="에세이·예술 속 잠든 책" books={essay} />
+        <BookRow title="마음 건강을 위한 책" books={mind} />
       </div>
 
       {/* 푸터 */}
