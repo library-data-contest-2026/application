@@ -11,24 +11,36 @@ export default function BookCard({ book }: { book: Book }) {
     >
       {/* 책 커버 */}
       <div
-        className="w-full aspect-[2/3] rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl shadow-md"
-        style={{ background: `linear-gradient(160deg, ${book.cover_color} 0%, #000 100%)` }}
+        className="w-full aspect-[2/3] rounded-lg overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl shadow-md relative"
+        style={!book.thumbnail ? { background: `linear-gradient(160deg, ${book.cover_color} 0%, #000 100%)` } : undefined}
       >
-        {/* 책 표지 내용 */}
-        <div className="w-full h-full flex flex-col justify-between p-3">
-          <div>
-            {book.is_monthly_pick && (
-              <span className="text-[9px] font-bold bg-[#003087] text-white px-1.5 py-0.5 rounded-full">이달의 구조</span>
-            )}
-            {book.is_weekly_new && !book.is_monthly_pick && (
-              <span className="text-[9px] font-bold bg-blue-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>
-            )}
+        {/* 썸네일 이미지 */}
+        {book.thumbnail && (
+          <img src={book.thumbnail} alt={book.title} className="w-full h-full object-cover" />
+        )}
+
+        {/* 배지 (이미지 없을 때만) */}
+        {!book.thumbnail && (
+          <div className="w-full h-full flex flex-col justify-between p-3">
+            <div>
+              {book.is_monthly_pick && (
+                <span className="text-[9px] font-bold bg-[#003675] text-white px-1.5 py-0.5 rounded-full">이달의 구조</span>
+              )}
+              {book.is_weekly_new && !book.is_monthly_pick && (
+                <span className="text-[9px] font-bold bg-blue-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>
+              )}
+            </div>
+            <div>
+              <p className="text-white font-bold text-sm leading-tight line-clamp-2 drop-shadow">{book.title}</p>
+              <p className="text-white/60 text-xs mt-1">{book.author}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-tight line-clamp-2 drop-shadow">{book.title}</p>
-            <p className="text-white/60 text-xs mt-1">{book.author}</p>
-          </div>
-        </div>
+        )}
+
+        {/* NEW 배지 (썸네일 위에) */}
+        {book.thumbnail && book.is_weekly_new && (
+          <span className="absolute top-2 left-2 text-[9px] font-bold bg-blue-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>
+        )}
 
         {/* 호버 오버레이 */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#003087]/95 via-[#003087]/70 to-[#003087]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex flex-col justify-end p-3">
