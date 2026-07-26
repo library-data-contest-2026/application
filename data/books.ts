@@ -45,7 +45,7 @@ export const books: Book[] = [
     summary: "자유를 갈망하는 시한부 문어 마셀러스와 고독한 노인 토바의 특별한 우정. 뉴욕타임스·워싱턴포스트 극찬, 영상화 화제작.",
     rescue_reason: "뉴욕타임스 극찬에 영상화까지 됐지만 국내 문학 분야 대출 하위 19%. 독자를 만나지 못한 채 잠들어 있었습니다.",
     video_id: null,
-    video_path: "/contents/아쿠아리움 편집본v2.mp4",
+    video_path: "https://9tsft1mmpmsw1srv.private.blob.vercel-storage.com/%E1%84%8B%E1%85%A1%E1%84%8F%E1%85%AE%E1%84%8B%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%AE%E1%86%B7%20%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%B8%E1%84%87%E1%85%A9%E1%86%ABv2.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfOXRTZnQxTU1QbXN3MVNydiIsIm93bmVySWQiOiJ0ZWFtX2d0ZkVNdnV3dUl6cm5Oa0FwMUR1QmxOYiIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzg1MTExOTQ1Njg4LCJpYXQiOjE3ODUwNjg3NDU3ODN9.5nyMBcd6rsfeO_1Ji54liNqCWriZlPzs3JWwf6FCN3c&vercel-blob-signature=fzVZL0nt2wxobBDZXCo8QFseKvrNl0ABsZDVg-zxDys",
     thumbnail: null,
     tags: ["힐링", "우정", "영상화", "베스트셀러"],
     scores: { loan: 19, rating: 95, librarian: 100, awards: 90, keywords: 85 },
