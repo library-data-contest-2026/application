@@ -48,7 +48,7 @@ export default function BookCard({ book }: { book: Book }) {
           <p className="text-blue-200 text-xs mb-2">{book.author}</p>
 
           <div className="flex items-center gap-1 mb-2">
-            <span className="text-[10px] text-red-300 font-semibold">대출 하위 {book.loan_percentile}%</span>
+            <span className="text-[10px] text-blue-200 font-semibold">재발견 지수 {book.rediscovery_score}</span>
             <span className="text-blue-400 text-[10px]">·</span>
             <span className="text-[10px] text-yellow-300">{"★".repeat(book.librarian_stars)}</span>
           </div>

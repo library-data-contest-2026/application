@@ -11,16 +11,10 @@ export default function Hero({ book }: { book: Book }) {
   const [muted, setMuted] = useState(true);
 
   const hasLocalVideo = !!book.video_path;
-  const embedUrl = !hasLocalVideo && book.video_id
-    ? `https://www.youtube.com/embed/${book.video_id}?autoplay=0&mute=1&controls=0&loop=1&playlist=${book.video_id}&rel=0&iv_load_policy=3&disablekb=1&enablejsapi=1`
-    : null;
 
   function handleEnter() {
     setHovered(true);
     if (hasLocalVideo) videoRef.current?.play();
-    else if (embedUrl) iframeRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: "command", func: "playVideo", args: [] }), "*"
-    );
   }
 
   function handleLeave() {
@@ -28,10 +22,6 @@ export default function Hero({ book }: { book: Book }) {
     if (hasLocalVideo) {
       videoRef.current?.pause();
       setMuted(true);
-    } else if (embedUrl) {
-      iframeRef.current?.contentWindow?.postMessage(
-        JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*"
-      );
     }
   }
 
@@ -79,16 +69,6 @@ export default function Hero({ book }: { book: Book }) {
             </button>
           )}
         </div>
-      ) : embedUrl ? (
-        <div className="absolute inset-0 bg-[#1a2a3a]">
-          <iframe
-            ref={iframeRef}
-            src={embedUrl}
-            allow="autoplay; encrypted-media"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ width: "max(100%, 177.78vh)", height: "max(56.25vw, 100%)", pointerEvents: "none", border: "none" }}
-          />
-        </div>
       ) : (
         <div className="absolute inset-0" style={{ background: "linear-gradient(-45deg, #3669ac, #329bba)" }} />
       )}
@@ -133,11 +113,11 @@ export default function Hero({ book }: { book: Book }) {
         <span
           className="px-3 py-1.5 text-xs font-semibold rounded shadow-sm transition-all duration-500"
           style={hovered
-            ? { background: "rgba(0,0,0,0.5)", border: "1px solid rgba(252,165,165,0.5)", color: "#fca5a5" }
-            : { background: "white", border: "1px solid #fecaca", color: "#dc2626" }
+            ? { background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.3)", color: "#93c5fd" }
+            : { background: "white", border: "1px solid #c6c6c6", color: "#003675" }
           }
         >
-          대출순위 하위 {book.loan_percentile}%
+          재발견 지수 {book.rediscovery_score} · {book.rediscovery_rank}위
         </span>
       </div>
 
@@ -193,7 +173,7 @@ export default function Hero({ book }: { book: Book }) {
           {book.summary}
         </p>
 
-        {/* 구조 전 대출 */}
+        {/* 재발견 지수 캡션 */}
         <div
           className="flex items-center gap-3 mb-8 p-4 rounded-lg w-fit shadow-sm transition-all duration-500"
           style={hovered
@@ -201,13 +181,11 @@ export default function Hero({ book }: { book: Book }) {
             : { background: "white", border: "1px solid #dcdcdc" }
           }
         >
-          <div className="text-center px-4" style={{ borderRight: "1px solid #e4e4e4" }}>
-            <p className="text-2xl font-black" style={{ color: hovered ? "#6b7280" : "#c6c6c6" }}>{book.loan_before}회</p>
-            <p className="text-xs mt-0.5" style={{ color: hovered ? "#9ca3af" : "#868686" }}>구조 전 대출</p>
-          </div>
           <div className="px-4">
-            <p className="text-xs mb-0.5" style={{ color: hovered ? "#9ca3af" : "#868686" }}>지난 1년간 대출</p>
-            <p className="text-sm font-semibold" style={{ color: hovered ? "white" : "#1d1d1d" }}>이 책을 깨워주세요.</p>
+            <p className="text-xs mb-0.5" style={{ color: hovered ? "#9ca3af" : "#868686" }}>
+              인기 목록에 없다는 건 대출이 0회라는 뜻이 아닙니다.<br />
+              다만 전국에서 가장 많이 빌려간 5,000권 안에는 없었습니다.
+            </p>
           </div>
         </div>
 

@@ -6,11 +6,11 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
   const nonPick = books.filter((b) => !b.is_monthly_pick);
-  const allBooks = [...nonPick].sort((a, b) => a.loan_percentile - b.loan_percentile);
+  const allBooks = [...nonPick].sort((a, b) => b.rediscovery_score - a.rediscovery_score);
   // 사서추천 분야 기준
-  const naturalSci = nonPick.filter((b) => ["과학", "환경"].includes(b.genre));
-  const humanities = nonPick.filter((b) => ["에세이", "예술", "교양", "역사"].includes(b.genre));
-  const mind = nonPick.filter((b) => ["심리", "육아", "소설"].includes(b.genre));
+  const naturalSci = nonPick.filter((b) => b.librarian_field === "자연과학");
+  const humanities = nonPick.filter((b) => ["인문학", "인문과학"].includes(b.librarian_field));
+  const mind = nonPick.filter((b) => b.librarian_field === "문학");
 
   return (
     <main className="bg-[#f2f4f5] min-h-screen">
@@ -46,9 +46,9 @@ export default function Home() {
       <div className="pb-20 space-y-2">
         <BookRow title="이번 주 새롭게 구조된 책" books={weeklyNew.filter(b => !b.is_monthly_pick)} />
         <BookRow title="가장 깊이 잠든 책들" books={allBooks} />
-        <BookRow title="자연과학 분야" books={naturalSci} />
-        <BookRow title="인문학·인문과학 분야" books={humanities} />
-        <BookRow title="문학·심리 분야" books={mind} />
+        <BookRow title="자연과학 분야 사서추천" books={naturalSci} />
+        <BookRow title="인문학·인문과학 분야 사서추천" books={humanities} />
+        <BookRow title="문학 분야 사서추천" books={mind} />
       </div>
 
       {/* 푸터 */}

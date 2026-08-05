@@ -6,22 +6,6 @@ import { Book } from "@/data/books";
 import Nav from "@/components/Nav";
 import BookCard from "@/components/BookCard";
 
-const scoreLabels: Record<string, string> = {
-  loan: "대출량",
-  rating: "평점",
-  librarian: "사서추천",
-  awards: "수상경력",
-  keywords: "키워드 다양성",
-};
-
-const scoreColors: Record<string, string> = {
-  loan: "bg-red-400",
-  rating: "bg-blue-400",
-  librarian: "bg-[#003675]",
-  awards: "bg-purple-400",
-  keywords: "bg-emerald-400",
-};
-
 type Props = {
   book: Book;
   similarBooks: Book[];
@@ -57,14 +41,11 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
           {/* 정보 */}
           <div className="flex-1">
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="px-3 py-1 bg-red-100 border border-red-200 text-red-600 text-xs font-bold rounded-full">
-                대출 하위 {book.loan_percentile}%
+              <span className="px-3 py-1 bg-[#003675] text-white text-xs font-bold rounded-full">
+                사서추천 · {book.librarian_field} · {book.librarian_year}
               </span>
               <span className="px-3 py-1 bg-[#edf1f5] border border-[#c6c6c6] text-[#003675] text-xs font-semibold rounded-full">
-                <span style={{ color: "#edb54c" }}>{"★".repeat(book.librarian_stars)}</span> 사서추천
-              </span>
-              <span className="px-3 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
-                {book.genre}
+                재발견 지수 {book.rediscovery_score} · {book.rediscovery_rank}위
               </span>
             </div>
 
@@ -72,28 +53,6 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
             <p className="text-gray-500 text-lg mb-6">{book.author} · {book.year}</p>
 
             <p className="text-gray-600 text-base leading-relaxed mb-8 max-w-xl">{book.summary}</p>
-
-            {/* 구조 전/후 */}
-            <div className="flex items-center gap-6 mb-8 p-4 bg-white border border-gray-200 rounded-xl w-fit shadow-sm">
-              <div className="text-center">
-                <p className="text-3xl font-black text-gray-300">{book.loan_before}</p>
-                <p className="text-xs text-gray-400 mt-1">구조 전 대출</p>
-              </div>
-              <div className="text-gray-300 text-2xl">→</div>
-              <div className="text-center">
-                {book.loan_after ? (
-                  <>
-                    <p className="text-3xl font-black text-emerald-500">{book.loan_after}</p>
-                    <p className="text-xs text-emerald-500 mt-1">구조 후 대출</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-3xl font-black text-[#003675]">?</p>
-                    <p className="text-xs text-blue-400 mt-1">구조 진행 중</p>
-                  </>
-                )}
-              </div>
-            </div>
 
             {/* 버튼 */}
             <div className="flex gap-3">
@@ -125,30 +84,66 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
         {/* 왜 선정됐을까? */}
         <section>
           <h2 className="text-xl font-bold mb-1 text-gray-900">왜 이 책이 선정됐을까?</h2>
-          <p className="text-gray-400 text-sm mb-8">"좋은데 안 읽히네" — AI가 발견한 불균형</p>
+          <p className="text-gray-400 text-sm mb-6">국립중앙도서관 사서추천 · 정보나루 데이터 기반 재발견 지수</p>
 
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 space-y-5 shadow-sm">
-            {(Object.entries(book.scores) as [string, number][]).map(([key, value]) => (
-              <div key={key}>
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+
+            {/* gate */}
+            <div className="flex items-start gap-3 pb-5 border-b border-gray-100">
+              <span className="px-2 py-0.5 bg-[#003675] text-white text-[10px] font-bold rounded shrink-0 mt-0.5">gate</span>
+              <div>
+                <p className="text-sm font-bold text-gray-900">국립중앙도서관 사서추천 통과</p>
+                <p className="text-xs text-gray-400 mt-0.5">{book.librarian_field} 분야 · {book.librarian_year} 선정</p>
+              </div>
+              <span className="ml-auto text-[#003675] font-black text-lg">✓</span>
+            </div>
+
+            {/* 두 지표 */}
+            {[
+              {
+                label: "인기성 연결도",
+                value: book.popularity_link,
+                desc: "2025년 인기 도서의 주제와 얼마나 가까운가 (TF-IDF 코사인 유사도)",
+                color: "#1d77b7",
+              },
+              {
+                label: "콘텐츠 근거 준비도",
+                value: book.content_readiness,
+                desc: "성씨개 길이·키워드 수·분류 정보·국가서지 등록 종합",
+                color: "#329bba",
+              },
+            ].map((m) => (
+              <div key={m.label}>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-600 font-medium">{scoreLabels[key]}</span>
-                  <span className={`font-bold ${key === "loan" ? "text-red-500" : "text-gray-700"}`}>
-                    {key === "loan" ? `하위 ${value}%` : `${value}점`}
-                  </span>
+                  <span className="text-gray-600 font-medium">{m.label}</span>
+                  <span className="font-black" style={{ color: m.color }}>{m.value}</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${scoreColors[key]}`}
-                    style={{ width: `${value}%` }}
-                  />
+                  <div className="h-full rounded-full" style={{ width: `${m.value}%`, background: m.color }} />
                 </div>
-                {key === "loan" && (
-                  <p className="text-xs text-red-400 mt-1">← 낮을수록 더 잠든 책</p>
-                )}
+                <p className="text-[11px] text-gray-400 mt-1">{m.desc}</p>
               </div>
             ))}
 
-            <div className="pt-4 border-t border-gray-100">
+            {/* 재발견 지수 */}
+            <div className="bg-[#edf1f5] rounded-xl p-4">
+              <div className="flex justify-between items-baseline mb-2">
+                <span className="text-sm font-bold text-[#003675]">재발견 지수</span>
+                <span className="text-2xl font-black text-[#003675]">{book.rediscovery_score}</span>
+              </div>
+              <div className="h-2 bg-white rounded-full overflow-hidden mb-2">
+                <div className="h-full rounded-full" style={{ width: `${book.rediscovery_score}%`, background: "linear-gradient(-45deg, #003675, #1d77b7)" }} />
+              </div>
+              <p className="text-[11px] text-[#003675]/70">
+                0.60 × 연결도 + 0.40 × 준비도 · 전체 99권 중 {book.rediscovery_rank}위
+              </p>
+            </div>
+
+            <p className="text-[10px] text-gray-400 pt-2 border-t border-gray-100">
+              ※ 재발견 지수는 대출 순위가 아니라 다시 소개할 책의 범위를 좁히기 위한 후보 발굴 지표입니다. 최종 선정은 사람이 합니다.
+            </p>
+
+            <div className="pt-2 border-t border-gray-100">
               <p className="text-[#003675] text-sm font-semibold">" {book.rescue_reason} "</p>
             </div>
           </div>
