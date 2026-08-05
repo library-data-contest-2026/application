@@ -102,7 +102,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
                 className="flex items-center gap-2 px-6 py-3 bg-[#003675] hover:bg-[#002a5c] text-white font-bold rounded-lg transition-colors shadow-md"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                30초 예고편
+                북트레일러 보기
               </button>
               <a
                 href={book.library_url}
@@ -157,15 +157,16 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
         {/* AI 북트레일러 */}
         <section>
           <h2 className="text-xl font-bold mb-1 text-gray-900">AI 북트레일러</h2>
-          <p className="text-gray-400 text-sm mb-6">키워드 → LLM 스크립트 → TTS·모션그래픽으로 자동 생성된 30초 예고편</p>
+          <p className="text-gray-400 text-sm mb-6">Google Flow로 장면 생성 · 네이버 클로바 더빙으로 나레이션 합성 · 사람이 편집 (30~60초)</p>
 
-          {book.video_id ? (
-            <div className="aspect-video w-full max-w-2xl rounded-2xl overflow-hidden bg-black shadow-xl border border-gray-200">
-              <iframe
-                src={`https://www.youtube.com/embed/${book.video_id}?rel=0`}
-                className="w-full h-full"
-                allow="encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
+          {book.video_path ? (
+            <div className="w-full max-w-2xl rounded-2xl overflow-hidden bg-black shadow-xl border border-gray-200">
+              <video
+                src={book.video_path}
+                controls
+                playsInline
+                className="w-full"
+                style={{ objectFit: "contain", maxHeight: "480px" }}
               />
             </div>
           ) : (
@@ -181,7 +182,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
                   </svg>
                 </div>
                 <p className="text-gray-700 font-semibold text-sm">{book.title}</p>
-                <p className="text-gray-400 text-xs mt-1">AI 북트레일러 — 준비 중</p>
+                <p className="text-gray-400 text-xs mt-1">AI 북트레일러 — 제작 예정</p>
               </div>
             </div>
           )}
@@ -225,7 +226,7 @@ export default function BookDetailClient({ book, similarBooks }: Props) {
       </div>
 
       {/* 비디오 모달 */}
-      {showVideo && !book.video_id && (
+      {showVideo && !book.video_path && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center" onClick={() => setShowVideo(false)}>
           <div className="bg-white border border-gray-200 rounded-2xl p-8 max-w-sm text-center shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <p className="text-2xl mb-3">🎬</p>

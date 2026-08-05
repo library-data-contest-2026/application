@@ -18,7 +18,6 @@ export type Book = {
   librarian_comment: string;
   summary: string;
   rescue_reason: string;
-  video_id: string | null;
   video_path: string | null;
   thumbnail: string | null;
   tags: string[];
@@ -35,7 +34,7 @@ export const books: Book[] = [
   {
     id: "1",
     title: "아쿠아리움이 문을 닫으면",
-    author: "셸비 반 펠트",
+    author: "셸비 반 펠트 ; 전선영 옮김",
     year: 2023,
     genre: "소설",
     cover_color: "#003d5c",
@@ -44,7 +43,6 @@ export const books: Book[] = [
     librarian_comment: "시한부 문어와 노인의 우정, 올해 가장 따뜻한 소설",
     summary: "자유를 갈망하는 시한부 문어 마셀러스와 고독한 노인 토바의 특별한 우정. 뉴욕타임스·워싱턴포스트 극찬, 영상화 화제작.",
     rescue_reason: "뉴욕타임스 극찬에 영상화까지 됐지만 국내 문학 분야 대출 하위 19%. 독자를 만나지 못한 채 잠들어 있었습니다.",
-    video_id: null,
     video_path: "https://a8cpqw0pp7ori9xy.public.blob.vercel-storage.com/%E1%84%8B%E1%85%A1%E1%84%8F%E1%85%AE%E1%84%8B%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%AE%E1%86%B7%20%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%B8%E1%84%87%E1%85%A9%E1%86%ABv2.mp4",
     thumbnail: null,
     tags: ["힐링", "우정", "영상화", "베스트셀러"],
@@ -59,7 +57,7 @@ export const books: Book[] = [
   {
     id: "2",
     title: "위로의 미술관",
-    author: "김선현",
+    author: "지병관",
     year: 2020,
     genre: "예술",
     cover_color: "#2d1b4e",
@@ -68,7 +66,6 @@ export const books: Book[] = [
     librarian_comment: "미술치료 전문가가 건네는 그림 처방전",
     summary: "미술치료 전문가 김선현이 상처받은 마음을 위한 그림 처방전을 내린다. 명화 속에서 위로를 찾는 여정.",
     rescue_reason: "사서 강력 추천 도서이나 예술 분야 특성상 대출 하위 14%에 머물러 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/위로의 미술관.png",
     tags: ["미술", "치유", "힐링", "명화"],
@@ -83,7 +80,7 @@ export const books: Book[] = [
   {
     id: "3",
     title: "외로움의 습격",
-    author: "비벡 머시",
+    author: "김마권",
     year: 2020,
     genre: "심리",
     cover_color: "#1a2a3a",
@@ -92,7 +89,6 @@ export const books: Book[] = [
     librarian_comment: "전 미국 의무총감이 밝히는 외로움의 위기, 필독서",
     summary: "미국 의무총감 비벡 머시가 진단하는 현대인의 외로움 전염병. 과학적 근거와 함께 연결의 치유력을 이야기한다.",
     rescue_reason: "세계가 주목한 외로움 연구서이지만 국내 사회과학 분야 대출 하위 11%에 잠들어 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/외로움의 습격.png",
     tags: ["심리", "사회", "건강", "외로움"],
@@ -107,7 +103,7 @@ export const books: Book[] = [
   {
     id: "4",
     title: "오래된 서울",
-    author: "최종현·김창희",
+    author: "최종현, 김창포",
     year: 2013,
     genre: "역사",
     cover_color: "#2a1a00",
@@ -116,7 +112,6 @@ export const books: Book[] = [
     librarian_comment: "사라져가는 서울의 골목과 기억을 담은 귀한 기록",
     summary: "골목과 골목 사이, 오래된 서울의 풍경을 담은 사진 기록집. 사라져가는 서울의 기억을 보존한 역작.",
     rescue_reason: "사서 만장일치 추천에도 역사·사진 분야 대출 하위 8%. 가장 깊이 잠든 책 중 하나입니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/오래된 서울.png",
     tags: ["서울", "역사", "사진", "기록"],
@@ -140,7 +135,6 @@ export const books: Book[] = [
     librarian_comment: "물리학자가 일상 언어로 풀어낸 양자역학, 과학 교양의 정수",
     summary: "물리학자 김상욱이 일상 언어로 풀어쓴 양자역학 입문서. 어렵다는 편견을 깨는 유쾌한 과학 교양서.",
     rescue_reason: "인문·과학 교양서 부문 강력 추천이나 자연과학 분야 대출 하위 16%에 잠들어 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/김상욱의 양자 공부.png",
     tags: ["양자역학", "물리학", "과학교양", "김상욱"],
@@ -155,7 +149,7 @@ export const books: Book[] = [
   {
     id: "6",
     title: "라멘이 과학이라면",
-    author: "오케야 신스케",
+    author: "가이구치 다모카즈 ; 하지연 옮김",
     year: 2022,
     genre: "과학",
     cover_color: "#3a1000",
@@ -164,7 +158,6 @@ export const books: Book[] = [
     librarian_comment: "라멘 한 그릇에 담긴 과학, 읽는 내내 군침이 돈다",
     summary: "라멘 한 그릇을 둘러싼 식품공학·화학·물리학. 일상 음식에서 과학의 경이로움을 발견하는 지식 교양서.",
     rescue_reason: "독창적인 기획과 높은 사서 평가에도 불구하고 대출 하위 21%에 머물러 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/라멘이 과학이라면.png",
     tags: ["음식", "과학", "교양", "일본"],
@@ -179,7 +172,7 @@ export const books: Book[] = [
   {
     id: "7",
     title: "베르베르 씨, 오늘은 뭘 쓰세요?",
-    author: "베르나르 베르베르",
+    author: "베르나르 베르베르 ; 전미연 옮김",
     year: 2021,
     genre: "에세이",
     cover_color: "#1a1a2a",
@@ -188,7 +181,6 @@ export const books: Book[] = [
     librarian_comment: "작가의 서재와 상상력을 엿보는 특별한 에세이",
     summary: "베르나르 베르베르가 작가로서의 일상과 상상력의 원천을 털어놓는 에세이. 창작의 비밀을 담은 책.",
     rescue_reason: "베르베르 팬이라면 반드시 읽어야 할 책이지만 에세이라는 이유로 대출 하위 23%에 머물러 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/베르베르 씨, 오늘은 뭘 쓰세요_.png",
     tags: ["에세이", "베르베르", "창작", "작가"],
@@ -203,7 +195,7 @@ export const books: Book[] = [
   {
     id: "8",
     title: "빗물과 당신",
-    author: "한무영",
+    author: "한무영, 강창대",
     year: 2019,
     genre: "환경",
     cover_color: "#003a2a",
@@ -212,7 +204,6 @@ export const books: Book[] = [
     librarian_comment: "빗물 박사가 전하는 환경과 삶의 이야기, 조용한 명저",
     summary: "빗물 연구 권위자 한무영 교수가 들려주는 빗물과 물, 환경과 삶에 관한 이야기. 잔잔하고 깊은 환경 에세이.",
     rescue_reason: "국립중앙도서관 사서 강력 추천이나 환경 분야 대출 하위 6%. 가장 깊이 잠든 숨겨진 명저입니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/빗물과 당신.png",
     tags: ["환경", "빗물", "생태", "에세이"],
@@ -226,8 +217,8 @@ export const books: Book[] = [
   },
   {
     id: "9",
-    title: "슬로 리딩, 생각을 키우는 힘",
-    author: "하시모토 다케시",
+    title: "슬로리딩, 생각을 키우는 힘",
+    author: "EBS Media 기획 ; 전이미",
     year: 2016,
     genre: "교양",
     cover_color: "#1a2a1a",
@@ -236,7 +227,6 @@ export const books: Book[] = [
     librarian_comment: "독서의 의미를 다시 묻는 책, 빠르게 읽는 시대의 역설",
     summary: "속독이 아닌 천천히 읽기의 힘. 한 권을 깊이 읽는 슬로 리딩이 사고력과 창의성을 어떻게 키우는지 이야기한다.",
     rescue_reason: "독서 교육 현장의 필독서이나 대출 하위 17%에 잠들어 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/슬로 리딩, 생각을 키우는 힘.png",
     tags: ["독서법", "교육", "사고력", "자기계발"],
@@ -251,7 +241,7 @@ export const books: Book[] = [
   {
     id: "10",
     title: "아이의 스트레스",
-    author: "서천석",
+    author: "서주석",
     year: 2015,
     genre: "육아",
     cover_color: "#2a1a3a",
@@ -260,7 +250,6 @@ export const books: Book[] = [
     librarian_comment: "소아정신과 전문의가 알려주는 아이 마음 읽기의 교과서",
     summary: "소아정신과 전문의 서천석이 풀어주는 아이의 스트레스 신호와 해법. 부모가 먼저 읽어야 할 육아 필독서.",
     rescue_reason: "육아 전문가 사이에서 필독서로 꼽히지만 대출 하위 13%에 잠들어 있었습니다.",
-    video_id: null,
     video_path: null,
     thumbnail: "/contents/썸네일/아이의 스트레스.png",
     tags: ["육아", "심리", "아동", "부모"],

@@ -3,24 +3,14 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { books } from "@/data/books";
 import Link from "next/link";
 
-const fiveStar = books.filter(b => b.librarian_stars === 5).length;
-const avgPercentile = Math.round(books.reduce((s, b) => s + b.loan_percentile, 0) / books.length);
-
 const PIPELINE = [
-  { step: "01", label: "데이터 수집", desc: "정보나루 공공 API에서 도서관별 대출 이력 · 장서 데이터 수집", color: "#003675" },
-  { step: "02", label: "지표 분석", desc: "대출량·평점·사서추천·수상경력·키워드 다양성 5개 지표 산출", color: "#1d77b7" },
-  { step: "03", label: "불균형 지수", desc: "가치 점수와 대출 점수의 차이로 저평가 도서 발굴", color: "#3669ac" },
-  { step: "04", label: "도서 선별", desc: "불균형 지수 상위 도서를 '구조 대상'으로 지정", color: "#329bba" },
-  { step: "05", label: "AI 트레일러", desc: "LLM 스크립트 → TTS 나레이션 → 모션그래픽 자동 생성", color: "#246beb" },
-  { step: "06", label: "웹 전시", desc: "Book Rescue 플랫폼에서 독자와 연결 → 대출 증가", color: "#003675" },
-];
-
-const METRICS = [
-  { label: "대출량", key: "loan", desc: "낮을수록 잠든 책", bad: true, color: "#dc2626" },
-  { label: "평점", key: "rating", desc: "독자·전문가 평균 평점", bad: false, color: "#1d77b7" },
-  { label: "사서추천", key: "librarian", desc: "담당 사서의 추천 지수", bad: false, color: "#003675" },
-  { label: "수상경력", key: "awards", desc: "국내외 문학상 수상 여부", bad: false, color: "#329bba" },
-  { label: "키워드 다양성", key: "keywords", desc: "도서 주제 키워드의 다양성", bad: false, color: "#3669ac" },
+  { step: "01", label: "데이터 수집", desc: "정보나루 인기대출 5,000권(2025년 전국). 요청 파라미터·응답 해시를 매니페스트에 보존", color: "#003675" },
+  { step: "02", label: "집중도 진단", desc: "로렌츠 곡선·지니계수로 인기 목록 내부의 쏠림 측정", color: "#1d77b7" },
+  { step: "03", label: "ISBN 표준화", desc: "사서추천 1,453권을 ISBN-13으로 정규화(체크섬 검증). 확인 1,405 / 검토대기 5 / 미해결 89 분리 보존", color: "#3669ac" },
+  { step: "04", label: "간극 분리", desc: "인기 5,000권 중 없는 사서추천 1,318건(고유 ISBN 1,363개) 추출", color: "#329bba" },
+  { step: "05", label: "근거 보강·점수화", desc: "국가서지·성씨개·키워드 보강 후 99권 재발견 점수화. 근거 부족은 보강 대기로 보존", color: "#246beb" },
+  { step: "06", label: "후보 편집", desc: "인기성 브릿지 990건·주제·정서 근거 293건 생성 → 사람이 10권 편집", color: "#1d77b7" },
+  { step: "07", label: "AI 콘텐츠·웹 전시", desc: "북트레일러·헤비주얼 제작 → 온라인 전시 → 도서관 대출 연결", color: "#003675" },
 ];
 
 const PROBLEMS = [
@@ -30,8 +20,8 @@ const PROBLEMS = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
     ),
-    title: "신간 쏠림 현상",
-    desc: "전체 대출의 약 70%가 출간 1년 이내 신간에 집중됩니다. 오래된 명작은 서가에서 점점 잊힙니다.",
+    title: "관심의 쏠림",
+    desc: "2025년 전국 인기대출 상위 10%(500권)가 전체 대출의 24.54%를 가져갑니다. 지니계수 0.2876.",
   },
   {
     icon: (
@@ -39,8 +29,8 @@ const PROBLEMS = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
       </svg>
     ),
-    title: "장르 편견",
-    desc: "SF·역사소설 등 특정 장르는 독자가 지레 어렵다고 판단해 대출을 기피합니다.",
+    title: "추천과 대출의 간극",
+    desc: "국립중앙도서관 사서가 추천한 1,453권 중 1,318권(90.7%)이 2025년 전국 인기대출 5,000권 목록에 이름이 없었습니다.",
   },
   {
     icon: (
@@ -49,7 +39,7 @@ const PROBLEMS = [
       </svg>
     ),
     title: "발견 경로 부재",
-    desc: "사서 추천·수상 이력이 있어도 독자에게 닿는 콘텐츠가 없으면 책은 그대로 잠듭니다.",
+    desc: "사서추천은 텍스트 목록으로만 제공됩니다. 스스로 콘텐츠를 만드는 발견의 통로가 없어 책은 그대로 잠듭니다.",
   },
 ];
 
@@ -75,9 +65,9 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap gap-6">
             {[
-              { n: `${books.length}권`, l: "발굴된 저평가 도서" },
-              { n: `하위 ${avgPercentile}%`, l: "평균 대출 순위" },
-              { n: `${fiveStar}권`, l: "사서 별점 5점" },
+              { n: `${books.length}권`, l: "이번 달 구조 대상 후보" },
+              { n: "1,363권", l: "데이터가 검토한 후보" },
+              { n: "1,453권", l: "국립중앙도서관 사서추천 원본" },
             ].map(({ n, l }) => (
               <div key={l} className="text-center">
                 <p className="text-3xl font-black text-white">{n}</p>
@@ -98,8 +88,8 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-black text-[#1d1d1d] mb-2">왜 좋은 책이 잠드는가</h2>
           <p className="text-[#868686] text-sm mb-8 max-w-2xl">
-            국내 공공도서관 장서 중 상당수가 연간 대출 10회 미만입니다.
             수상 경력과 사서 추천을 받은 책조차 독자를 만나지 못하고 서가에서 잠듭니다.
+            정보나루 공공데이터로 실측한 결과입니다.
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             {PROBLEMS.map((p, i) => (
@@ -122,43 +112,71 @@ export default function AboutPage() {
             <div className="w-1 h-5 rounded-full" style={{ background: "linear-gradient(-45deg, #3669ac, #329bba)" }} />
             <p className="text-xs font-bold tracking-widest text-[#003675] uppercase">Algorithm</p>
           </div>
-          <h2 className="text-2xl font-black text-[#1d1d1d] mb-2">저평가 도서 발굴 알고리즘</h2>
+          <h2 className="text-2xl font-black text-[#1d1d1d] mb-2">재발견 지수</h2>
           <p className="text-[#868686] text-sm mb-8 max-w-2xl">
-            단순 대출 순위가 아닌 5개 복합 지표를 통해 <strong className="text-[#003675]">가치는 높지만 대출은 낮은</strong> 불균형 도서를 찾아냅니다.
+            단순 대출 순위가 아닌 두 가지 실측 지표로 <strong className="text-[#003675]">다시 만날 가치가 있는</strong> 책을 찾아냅니다.
           </p>
 
-          {/* 지표 설명 */}
-          <div className="grid md:grid-cols-5 gap-3 mb-8">
-            {METRICS.map((m, i) => (
-              <ScrollReveal key={m.key} delay={i * 80}>
-                <div className="bg-white border border-[#dcdcdc] rounded-lg p-4 shadow-sm text-center">
-                  <div className="w-3 h-3 rounded-full mx-auto mb-2" style={{ background: m.color }} />
-                  <p className="text-xs font-bold text-[#1d1d1d] mb-1">{m.label}</p>
-                  <p className="text-[10px] text-[#868686] leading-tight">{m.desc}</p>
-                  {m.bad && <p className="text-[10px] text-red-400 mt-1">↓ 낮을수록 잠든 책</p>}
-                  {!m.bad && <p className="text-[10px] text-[#003675] mt-1">↑ 높을수록 가치 있는 책</p>}
+          {/* 선행 조건 */}
+          <ScrollReveal>
+            <div className="bg-white border border-[#dcdcdc] rounded-lg p-5 mb-4 shadow-sm flex items-start gap-4">
+              <span className="px-2 py-0.5 bg-[#003675] text-white text-[10px] font-bold rounded shrink-0 mt-0.5">gate</span>
+              <div>
+                <p className="text-sm font-bold text-[#1d1d1d] mb-0.5">국립중앙도서관 사서추천 통과</p>
+                <p className="text-xs text-[#868686]">사서추천 목록에 있는 도서만 대상. 같은 주제의 다른 판본이 이미 인기 목록에 있으면 제외.</p>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* 두 지표 */}
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            {[
+              {
+                label: "인기성 연결도",
+                weight: "60%",
+                color: "#1d77b7",
+                desc: "성씨개·키워드·분류를 숫자 벡터로 변환해 2025년 인기 도서의 주제가 얼마나 가까운지 측정 (TF-IDF 코사인 유사도)",
+              },
+              {
+                label: "콘텐츠 근거 준비도",
+                weight: "40%",
+                color: "#329bba",
+                desc: "성씨개 길이 40% + 키워드 수 30% + 분류 정보 15% + 국가서지 등록 15%",
+              },
+            ].map((m, i) => (
+              <ScrollReveal key={m.label} delay={i * 100}>
+                <div className="bg-white border border-[#dcdcdc] rounded-lg p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-3 h-3 rounded-full" style={{ background: m.color }} />
+                    <p className="text-sm font-bold text-[#1d1d1d]">{m.label}</p>
+                    <span className="ml-auto text-xs font-black" style={{ color: m.color }}>{m.weight}</span>
+                  </div>
+                  <p className="text-xs text-[#868686] leading-relaxed">{m.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
           </div>
 
-          {/* 불균형 지수 공식 */}
+          {/* 공식 */}
           <ScrollReveal>
             <div className="bg-[#edf1f5] border border-[#c6c6c6] rounded-lg p-6">
-              <p className="text-xs font-bold text-[#003675] uppercase tracking-widest mb-3">불균형 지수 (Rescue Score)</p>
+              <p className="text-xs font-bold text-[#003675] uppercase tracking-widest mb-3">재발견 지수 (Core Preselection Score)</p>
               <div className="flex items-center gap-3 flex-wrap">
-                <div className="bg-white border border-[#dcdcdc] rounded px-4 py-2 text-sm font-semibold text-[#1d1d1d]">
-                  평균(평점 + 사서추천 + 수상 + 키워드)
+                <div className="bg-white border border-[#dcdcdc] rounded px-4 py-2 text-sm font-semibold text-[#1d77b7]">
+                  0.60 × 인기성 연결도
                 </div>
-                <span className="text-2xl font-black text-[#003675]">−</span>
-                <div className="bg-white border border-red-200 rounded px-4 py-2 text-sm font-semibold text-red-600">
-                  대출량 점수
+                <span className="text-2xl font-black text-[#003675]">+</span>
+                <div className="bg-white border border-[#dcdcdc] rounded px-4 py-2 text-sm font-semibold text-[#329bba]">
+                  0.40 × 근거 준비도
                 </div>
                 <span className="text-2xl font-black text-[#003675]">=</span>
                 <div className="rounded px-4 py-2 text-sm font-black text-white" style={{ background: "linear-gradient(-45deg, #003675, #1d77b7)" }}>
-                  Rescue Score ↑ 높을수록 구조 우선
+                  재발견 지수 ↑ 높을수록 우선 후보
                 </div>
               </div>
+              <p className="text-[10px] text-[#868686] mt-3">
+                ※ 이 지수는 대출 순위가 아니라, 다시 소개할 책의 범위를 좁히기 위한 후보 발굴 지표입니다. 최종 선정은 사람이 합니다.
+              </p>
             </div>
           </ScrollReveal>
         </ScrollReveal>
@@ -170,11 +188,11 @@ export default function AboutPage() {
             <p className="text-xs font-bold tracking-widest text-[#003675] uppercase">Pipeline</p>
           </div>
           <h2 className="text-2xl font-black text-[#1d1d1d] mb-2">Book Rescue 전체 파이프라인</h2>
-          <p className="text-[#868686] text-sm mb-8">데이터 수집부터 독자 연결까지 자동화된 6단계 프로세스</p>
+          <p className="text-[#868686] text-sm mb-8">데이터 수집부터 독자 연결까지 7단계 프로세스</p>
 
-          <div className="grid md:grid-cols-6 gap-3">
+          <div className="grid md:grid-cols-7 gap-2">
             {PIPELINE.map((p, i) => (
-              <ScrollReveal key={p.step} delay={i * 80}>
+              <ScrollReveal key={p.step} delay={i * 60}>
                 <div className="relative bg-white border border-[#dcdcdc] rounded-lg p-4 shadow-sm h-full">
                   {i < PIPELINE.length - 1 && (
                     <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 z-10 text-[#c6c6c6] font-bold text-sm">›</div>
@@ -196,17 +214,16 @@ export default function AboutPage() {
                 <div className="w-1 h-5 rounded-full" style={{ background: "linear-gradient(-45deg, #3669ac, #329bba)" }} />
                 <p className="text-xs font-bold tracking-widest text-[#003675] uppercase">AI Trailer</p>
               </div>
-              <h2 className="text-2xl font-black text-[#1d1d1d] mb-3">자동 생성 AI 북트레일러</h2>
+              <h2 className="text-2xl font-black text-[#1d1d1d] mb-3">AI 북트레일러 제작 공정</h2>
               <p className="text-[#868686] text-sm leading-relaxed mb-6">
-                책의 키워드와 핵심 내용을 AI가 분석해 30초 나레이션 스크립트를 자동 생성하고,
-                TTS 음성과 모션그래픽을 결합해 독자의 감성을 자극하는 숏폼 콘텐츠를 만듭니다.
+                국가서지·성씨개·키워드에서 확인된 맥락만 재구성하며, 책에 없는 내용은 만들지 않습니다.
               </p>
               <div className="space-y-3">
                 {[
-                  ["키워드 추출", "도서 메타데이터에서 핵심 키워드 자동 추출"],
-                  ["LLM 스크립트", "Claude AI가 30초 나레이션 대본 생성"],
-                  ["TTS 나레이션", "한국어 TTS로 감정 있는 음성 합성"],
-                  ["모션그래픽", "키워드 기반 텍스트 애니메이션 영상 제작"],
+                  ["근거 추출", "국가서지 주제 + 정보나루 키워드 + 성씨개에서 주제·정서 근거 후보 (원문에 실제 있는 단어만 사용)"],
+                  ["대본 작성", "대본 주제와 나레이션 대본을 작성한 AI가 이어하고 사람이 확인"],
+                  ["나레이션 합성", "네이버 클로바 더빙 한국어 보이스 '패션'으로 음성 생성"],
+                  ["장면 생성·편집", "Google Flow omni flash로 8초 클립 생성 → 사람이 컷 순서·길이·사운드·자막 편집 (30~60초)"],
                 ].map(([title, desc], i) => (
                   <div key={title} className="flex items-start gap-3">
                     <span className="w-5 h-5 rounded-full bg-[#003675] text-white text-[10px] font-black flex items-center justify-center shrink-0 mt-0.5">
@@ -219,6 +236,9 @@ export default function AboutPage() {
                   </div>
                 ))}
               </div>
+              <p className="text-[10px] text-[#868686] mt-4 border-t border-[#e4e4e4] pt-3">
+                이 영상은 Google Flow의 영상 생성 모델 omni flash로 장면을 생성하고, 네이버 클로바 더빙의 한국어 보이스 '패션'으로 나레이션을 합성한 뒤, 사람이 컷 순서·길이·사운드·자막을 편집해 완성했습니다(30~60초). 도서 헤비주얼은 Nano Banana(Gemini 이미지 생성 모델)로 제작한 것으로, 실존 인물·기존 캐릭터·원저작 삽화를 모사하지 않습니다. 작성한 AI는 실제 후보한 서지·성씨개·키워드에서 확인된 맥락만 재구성하며, 책에 없는 내용은 만들지 않습니다.
+              </p>
             </div>
             <div className="bg-white border border-[#dcdcdc] rounded-xl p-6 shadow-sm">
               <p className="text-xs font-bold text-[#003675] uppercase tracking-widest mb-4">북트레일러 샘플 — 아쿠아리움이 문을 닫으면</p>
@@ -228,6 +248,7 @@ export default function AboutPage() {
                   className="w-full h-full"
                   controls
                   playsInline
+                  style={{ objectFit: "contain" }}
                 />
               </div>
             </div>
@@ -244,9 +265,9 @@ export default function AboutPage() {
             <h2 className="text-2xl font-black text-white mb-6">기대 효과</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { icon: "📈", title: "대출 증가", desc: "저평가 도서의 연간 대출 3배 이상 증가 목표. 실제 구조 완료 도서 기준 평균 +215% 달성." },
-                { icon: "🎬", title: "콘텐츠 자동화", desc: "AI 파이프라인으로 도서 1권당 북트레일러 제작 비용 90% 절감. 확장 가능한 모델." },
-                { icon: "🏛️", title: "도서관 가치 제고", desc: "데이터 기반 장서 관리 · AI 콘텐츠 생산으로 도서관의 디지털 전환 선도." },
+                { icon: "📈", title: "대출 증가", desc: "저평가 도서의 대출 증가를 목표로 합니다. 노출 전후 대출·클릭 변화를 측정해 효과를 검증할 예정이며, 현재는 측정 전 단계입니다." },
+                { icon: "🎬", title: "콘텐츠 자동화", desc: "AI 파이프라인은 선별·스크립트·나레이션·장면 생성을 지원합니다. 후보 선정이 없어도 콘텐츠화하지 못한 사서추천 도서에 즉시 적용할 수 있습니다." },
+                { icon: "🏛️", title: "도서관 가치 제고", desc: "데이터 기반 장서 관리 · AI 콘텐츠 생산으로 도서관의 디지털 전환을 선도합니다." },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="bg-white/10 rounded-lg p-5">
                   <span className="text-2xl mb-3 block">{icon}</span>

@@ -7,9 +7,10 @@ import ScrollReveal from "@/components/ScrollReveal";
 export default function Home() {
   const nonPick = books.filter((b) => !b.is_monthly_pick);
   const allBooks = [...nonPick].sort((a, b) => a.loan_percentile - b.loan_percentile);
-  const science = nonPick.filter((b) => ["과학", "교양", "환경"].includes(b.genre));
-  const essay = nonPick.filter((b) => ["에세이", "예술"].includes(b.genre));
-  const mind = nonPick.filter((b) => ["심리", "육아"].includes(b.genre));
+  // 사서추천 분야 기준
+  const naturalSci = nonPick.filter((b) => ["과학", "환경"].includes(b.genre));
+  const humanities = nonPick.filter((b) => ["에세이", "예술", "교양", "역사"].includes(b.genre));
+  const mind = nonPick.filter((b) => ["심리", "육아", "소설"].includes(b.genre));
 
   return (
     <main className="bg-[#f2f4f5] min-h-screen">
@@ -31,12 +32,12 @@ export default function Home() {
             <p className="text-xs text-[#868686] mt-1">이번 달 구조 도서</p>
           </div>
           <div className="text-center py-6 px-4 border-x border-[#e4e4e4]">
-            <p className="text-2xl md:text-3xl font-black text-[#1d1d1d]">12,311</p>
-            <p className="text-xs text-[#868686] mt-1">누적 조회 수</p>
+            <p className="text-2xl md:text-3xl font-black text-[#1d1d1d]">1,363권</p>
+            <p className="text-xs text-[#868686] mt-1">데이터가 검토한 후보</p>
           </div>
           <div className="text-center py-6 px-4">
-            <p className="text-2xl md:text-3xl font-black text-emerald-600">+41%</p>
-            <p className="text-xs text-[#868686] mt-1">평균 대출 증가율</p>
+            <p className="text-2xl md:text-3xl font-black text-emerald-600">24.54%</p>
+            <p className="text-xs text-[#868686] mt-1">인기 상위 10%가 가져간 대출</p>
           </div>
         </div>
       </ScrollReveal>
@@ -45,9 +46,9 @@ export default function Home() {
       <div className="pb-20 space-y-2">
         <BookRow title="이번 주 새롭게 구조된 책" books={weeklyNew.filter(b => !b.is_monthly_pick)} />
         <BookRow title="가장 깊이 잠든 책들" books={allBooks} />
-        <BookRow title="과학·교양 속 잠든 책" books={science} />
-        <BookRow title="에세이·예술 속 잠든 책" books={essay} />
-        <BookRow title="마음 건강을 위한 책" books={mind} />
+        <BookRow title="자연과학 분야" books={naturalSci} />
+        <BookRow title="인문학·인문과학 분야" books={humanities} />
+        <BookRow title="문학·심리 분야" books={mind} />
       </div>
 
       {/* 푸터 */}
