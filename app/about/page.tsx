@@ -224,7 +224,7 @@ export default function AboutPage() {
               <p className="text-xs font-bold text-[#003675] uppercase tracking-widest mb-4">북트레일러 샘플 — 아쿠아리움이 문을 닫으면</p>
               <div className="aspect-video bg-[#1a2a3a] rounded-lg overflow-hidden">
                 <video
-                  src="https://9tsft1mmpmsw1srv.private.blob.vercel-storage.com/%E1%84%8B%E1%85%A1%E1%84%8F%E1%85%AE%E1%84%8B%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%AE%E1%86%B7%20%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%B8%E1%84%87%E1%85%A9%E1%86%ABv2.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfOXRTZnQxTU1QbXN3MVNydiIsIm93bmVySWQiOiJ0ZWFtX2d0ZkVNdnV3dUl6cm5Oa0FwMUR1QmxOYiIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzg1MTExOTQ1Njg4LCJpYXQiOjE3ODUwNjg3NDU3ODN9.5nyMBcd6rsfeO_1Ji54liNqCWriZlPzs3JWwf6FCN3c&vercel-blob-signature=fzVZL0nt2wxobBDZXCo8QFseKvrNl0ABsZDVg-zxDys"
+                  src="https://a8cpqw0pp7ori9xy.public.blob.vercel-storage.com/%E1%84%8B%E1%85%A1%E1%84%8F%E1%85%AE%E1%84%8B%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%AE%E1%86%B7%20%E1%84%91%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%B5%E1%86%B8%E1%84%87%E1%85%A9%E1%86%ABv2.mp4"
                   className="w-full h-full"
                   controls
                   playsInline
