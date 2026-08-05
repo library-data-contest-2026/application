@@ -48,7 +48,7 @@ export const books: Book[] = [
     similar_books: ["빗물과 당신"],
     is_monthly_pick: true,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9791191248975",
   },
   {
     id: "2",
@@ -73,7 +73,7 @@ export const books: Book[] = [
     similar_books: ["빗물과 당신", "슬로리딩, 생각을 키우는 힘"],
     is_monthly_pick: false,
     is_weekly_new: true,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9791191825145",
   },
   {
     id: "3",
@@ -98,7 +98,7 @@ export const books: Book[] = [
     similar_books: ["아이의 스트레스", "위로의 미술관"],
     is_monthly_pick: false,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9791191183276",
   },
   {
     id: "4",
@@ -123,7 +123,7 @@ export const books: Book[] = [
     similar_books: ["슬로리딩, 생각을 키우는 힘"],
     is_monthly_pick: false,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788996787228",
   },
   {
     id: "5",
@@ -148,7 +148,7 @@ export const books: Book[] = [
     similar_books: ["라멘이 과학이라면"],
     is_monthly_pick: false,
     is_weekly_new: true,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788983718914",
   },
   {
     id: "6",
@@ -173,7 +173,7 @@ export const books: Book[] = [
     similar_books: ["김상욱의 양자 공부"],
     is_monthly_pick: false,
     is_weekly_new: true,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788960517134",
   },
   {
     id: "7",
@@ -198,7 +198,7 @@ export const books: Book[] = [
     similar_books: ["슬로리딩, 생각을 키우는 힘"],
     is_monthly_pick: false,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788932923383",
   },
   {
     id: "8",
@@ -223,7 +223,7 @@ export const books: Book[] = [
     similar_books: ["아쿠아리움이 문을 닫으면"],
     is_monthly_pick: false,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788994963020",
   },
   {
     id: "9",
@@ -248,7 +248,7 @@ export const books: Book[] = [
     similar_books: ["베르베르 씨, 오늘은 뭘 쓰세요?"],
     is_monthly_pick: false,
     is_weekly_new: false,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788965181484",
   },
   {
     id: "10",
@@ -273,7 +273,7 @@ export const books: Book[] = [
     similar_books: ["외로움의 습격"],
     is_monthly_pick: false,
     is_weekly_new: true,
-    library_url: "https://www.nl.go.kr/",
+    library_url: "https://www.nl.go.kr/search/index.do?query=9788901142425",
   },
 ];
 

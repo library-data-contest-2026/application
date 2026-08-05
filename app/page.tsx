@@ -6,11 +6,11 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Home() {
   const nonPick = books.filter((b) => !b.is_monthly_pick);
-  const allBooks = [...nonPick].sort((a, b) => b.rediscovery_score - a.rediscovery_score);
-  // 사서추천 분야 기준
+  const byScore = [...nonPick].sort((a, b) => b.rediscovery_score - a.rediscovery_score);
+  // 사서추천 분야 기준 (중복 없이)
   const naturalSci = nonPick.filter((b) => b.librarian_field === "자연과학");
-  const humanities = nonPick.filter((b) => ["인문학", "인문과학"].includes(b.librarian_field));
-  const mind = nonPick.filter((b) => b.librarian_field === "문학");
+  const humHum = nonPick.filter((b) => b.librarian_field === "인문학");
+  const humSci = nonPick.filter((b) => b.librarian_field === "인문과학");
 
   return (
     <main className="bg-[#f2f4f5] min-h-screen">
@@ -45,10 +45,10 @@ export default function Home() {
       {/* 책 열들 */}
       <div className="pb-20 space-y-2">
         <BookRow title="이번 주 새롭게 구조된 책" books={weeklyNew.filter(b => !b.is_monthly_pick)} />
-        <BookRow title="가장 깊이 잠든 책들" books={allBooks} />
+        <BookRow title="재발견 지수 높은 순" books={byScore} />
         <BookRow title="자연과학 분야 사서추천" books={naturalSci} />
-        <BookRow title="인문학·인문과학 분야 사서추천" books={humanities} />
-        <BookRow title="문학 분야 사서추천" books={mind} />
+        <BookRow title="인문학 분야 사서추천" books={humHum} />
+        <BookRow title="인문과학 분야 사서추천" books={humSci} />
       </div>
 
       {/* 푸터 */}
@@ -68,13 +68,13 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-[#555] font-semibold mb-1 text-xs">데이터 출처</p>
-              <a href="https://www.data4library.kr/" target="_blank" rel="noreferrer" className="hover:text-[#003675] transition-colors">정보나루 (도서관 빅데이터)</a>
-              <a href="https://www.nl.go.kr/" target="_blank" rel="noreferrer" className="hover:text-[#003675] transition-colors">국립중앙도서관</a>
+              <a href="https://www.nl.go.kr/NL/contents/N31601000000.do" target="_blank" rel="noreferrer" className="hover:text-[#003675] transition-colors">국립중앙도서관 사서추천도서 · 국가서지</a>
+              <a href="https://www.data4library.kr/" target="_blank" rel="noreferrer" className="hover:text-[#003675] transition-colors">도서관 정보나루 인기대출도서 · 도서관이용자료 · 도서키워드</a>
             </div>
           </div>
           <div className="border-t border-[#eaeaea] pt-6 flex flex-col md:flex-row justify-between gap-2">
             <p>© 2026 Book Rescue · 2026 도서관 데이터 활용 공모전 출품작</p>
-            <p>데이터 출처: 국립중앙도서관 정보나루 공공데이터 · 비상업적 교육 목적</p>
+            <p>데이터 출처: 국립중앙도서관 사서추천도서·국가서지 / 정보나루 인기대출도서·도서관이용자료·도서키워드 · 비상업적 교육 목적</p>
           </div>
         </div>
       </footer>
